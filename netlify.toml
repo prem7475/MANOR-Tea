@@ -1,0 +1,7 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  install_command = "npm install --legacy-peer-deps"
+
+[build.environment]
+  NODE_VERSION = "22"
