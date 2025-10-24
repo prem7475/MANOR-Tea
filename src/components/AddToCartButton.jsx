@@ -27,7 +27,7 @@ const AddToCartButton = ({ product, className = '' }) => {
 
   return (
     <button
-      className={`mt-4 px-4 py-1 rounded transition-all duration-300 hover:scale-105 hover:shadow-lg ${isAdding ? 'bg-manorDark' : 'bg-accent hover:bg-manorDark'} text-white font-semibold ${cartAnimation ? 'animate-bounce scale-110' : ''} ${className}`}
+      className={`mt-4 px-4 py-1 rounded transition-all duration-300 hover:scale-105 ${isAdding ? 'bg-gray-700' : 'bg-gray-800 hover:bg-gray-700'} text-white font-semibold ${cartAnimation ? 'animate-bounce scale-110' : ''} ${className}`}
       onClick={handleAddToCart}
       disabled={isAdding}
     >

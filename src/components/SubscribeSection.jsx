@@ -13,7 +13,7 @@ const SubscribeSection = () => {
   return (
     <section
       id="subscribe"
-      className="py-8 sm:py-12 bg-gray-900 text-white flex flex-col justify-center items-center"
+      className="py-16 bg-gray-900 text-white flex flex-col justify-center items-center"
     >
       <div className="max-w-md w-full text-center">
         <h3 className="text-2xl font-serif font-bold text-yellow-400 mb-6">Subscribe</h3>

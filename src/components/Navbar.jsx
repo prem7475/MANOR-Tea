@@ -1,20 +1,15 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../hooks/useCart.jsx';
 import { useFavourites } from '../context/FavouritesContext.jsx';
-import { useAuth } from '../context/AuthContext.jsx';
-import UserMenu from './UserMenu.jsx';
-import { FaShoppingCart, FaHeart, FaBars, FaTimes, FaHome, FaBox, FaGift, FaInfo, FaUsers, FaSignInAlt, FaUserPlus } from 'react-icons/fa';
 
-const Navbar = ({ openCart, openAuthModal }) => {
+const Navbar = ({ openCart }) => {
   const location = useLocation();
   const [companyDropdownOpen, setCompanyDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+  const [showCartSummary, setShowCartSummary] = useState(false);
   const { cart, cartAnimation } = useCart();
   const { favourites } = useFavourites();
-  const { user } = useAuth();
 
   const toggleDropdown = () => setCompanyDropdownOpen(!companyDropdownOpen);
   const closeDropdown = () => setCompanyDropdownOpen(false);
@@ -23,363 +18,178 @@ const Navbar = ({ openCart, openAuthModal }) => {
 
   const isActive = (path) => location.pathname === path;
 
-  const navItems = [
-    { path: '/', label: 'Home', icon: FaHome },
-    { path: '/products', label: 'Products', icon: FaBox },
-    { path: '/gifts', label: 'Gifts', icon: FaGift },
-    { path: '/about', label: 'About Us', icon: FaInfo },
-    { path: '/leadership', label: 'Leadership', icon: FaUsers },
-  ];
-
   return (
-    <motion.nav
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-      className="glass-morphism text-white px-2 sm:px-4 md:px-8 py-4 shadow-2xl flex items-center justify-between font-bold relative sticky top-0 z-50"
-      style={{
-        background: 'rgba(42, 42, 42, 0.9)',
-        backdropFilter: 'blur(20px)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
-      }}
-    >
+    <nav className="bg-white text-black px-4 md:px-8 py-4 shadow-lg flex items-center justify-between font-serif font-bold relative sticky top-0 z-50">
       {/* Company Logo */}
-      <motion.div
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        <Link to="/" className="flex items-center relative group" onClick={closeMobileMenu}>
-          <motion.img
-            src="/ManorLogo.png"
-            alt="ManorLogo"
-            className="h-12 md:h-16 w-auto"
-            whileHover={{ rotate: [0, -5, 5, 0] }}
-            transition={{ duration: 0.5 }}
-          />
-          <motion.span
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 text-2xl md:text-3xl font-bold text-yellow-400 opacity-0"
-            initial={{ x: 0 }}
-            whileHover={{ x: 60, opacity: 1 }}
-            transition={{ duration: 0.3 }}
-          >
-            MANOR
-          </motion.span>
-        </Link>
-      </motion.div>
+      <Link to="/" className="flex items-center relative group" onClick={closeMobileMenu}>
+        <img
+          src="/ManorLogo.png"
+          alt="ManorLogo"
+          className="h-12 md:h-16 w-auto"
+        />
+        <span className="absolute left-0 top-1/2 transform -translate-y-1/2 text-2xl md:text-3xl font-bold text-black opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:left-full">
+          MANOR
+        </span>
+      </Link>
 
       {/* Desktop Navigation Links */}
       <div className="hidden md:flex items-center gap-6 relative text-xl">
-        {navItems.map((item, index) => (
-          <motion.div
-            key={item.path}
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: index * 0.1 + 0.3 }}
-          >
-            <Link
-              to={item.path}
-              className={`relative hover:text-yellow-400 transition-all duration-300 flex items-center gap-2 px-3 py-2 rounded-lg ${
-                isActive(item.path) ? 'text-yellow-400 bg-yellow-400/10' : 'text-white'
-              }`}
-              onClick={closeMobileMenu}
-            >
-              <motion.div
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.5 }}
-              >
-                <item.icon className="text-lg" />
-              </motion.div>
-              <span className="relative">
-                {item.label}
-                {isActive(item.path) && (
-                  <motion.div
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-amber-400"
-                    layoutId="activeTab"
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  />
-                )}
-              </span>
-            </Link>
-          </motion.div>
-        ))}
-
-        {/* Favourites */}
-        <motion.div
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.8 }}
+        <Link
+          to="/"
+          className={`hover:text-yellow-400 transition-colors duration-300 ${isActive('/') ? 'text-yellow-400' : ''}`}
+          onClick={closeMobileMenu}
         >
-          <Link
-            to="/favourites"
-            className={`relative hover:text-yellow-400 transition-all duration-300 flex items-center gap-2 px-3 py-2 rounded-lg ${
-              isActive('/favourites') ? 'text-yellow-400 bg-yellow-400/10' : 'text-white'
-            }`}
-            aria-label="Favourites"
-            onClick={closeMobileMenu}
-          >
-            <motion.div
-              whileHover={{ scale: 1.2 }}
-              animate={{
-                color: favourites.length > 0 ? '#ef4444' : '#ffffff'
-              }}
-            >
-              <FaHeart className="text-lg" />
-            </motion.div>
-            <span>Your Fav</span>
-            {favourites.length > 0 && (
-              <motion.span
-                className="bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center font-bold"
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ type: "spring", stiffness: 500 }}
-              >
-                {favourites.length}
-              </motion.span>
-            )}
-          </Link>
-        </motion.div>
-
-        {/* Cart */}
-        <motion.div
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.9 }}
-          className="relative"
+          Home
+        </Link>
+        <Link
+          to="/products"
+          className={`hover:text-yellow-400 transition-colors duration-300 ${isActive('/products') ? 'text-yellow-400' : ''}`}
+          onClick={closeMobileMenu}
         >
-          <motion.button
-            className={`hover:text-yellow-400 transition-all duration-300 flex items-center gap-2 px-3 py-2 rounded-lg ${
-              location.pathname === '/cart' ? 'text-yellow-400 bg-yellow-400/10' : 'text-white'
-            }`}
-            aria-label="Cart"
-            onClick={(e) => {
-              e.preventDefault();
-              openCart();
-              closeMobileMenu();
-            }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <motion.div
-              animate={cartAnimation ? {
-                rotate: [0, -10, 10, -10, 0],
-                scale: [1, 1.2, 1]
-              } : {}}
-              transition={{ duration: 0.5 }}
-            >
-              <FaShoppingCart className="text-lg" />
-            </motion.div>
-            <span>Your CART</span>
-            {cart.length > 0 && (
-              <motion.span
-                className="bg-green-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center font-bold"
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ type: "spring", stiffness: 500 }}
-                key={cart.length}
-              >
-                {cart.length}
-              </motion.span>
-            )}
-          </motion.button>
-        </motion.div>
+          Products
+        </Link>
+        <Link
+          to="/gifts"
+          className={`hover:text-yellow-400 transition-colors duration-300 ${isActive('/gifts') ? 'text-yellow-400' : ''}`}
+          onClick={closeMobileMenu}
+        >
+          Gifts
+        </Link>
+        <Link
+          to="/about"
+          className={`hover:text-yellow-400 transition-colors duration-300 ${isActive('/about') ? 'text-yellow-400' : ''}`}
+          onClick={closeMobileMenu}
+        >
+          About Us
+        </Link>
+        <Link
+          to="/leadership"
+          className={`hover:text-yellow-400 transition-colors duration-300 ${isActive('/leadership') ? 'text-yellow-400' : ''}`}
+          onClick={closeMobileMenu}
+        >
+          Leadership
+        </Link>
 
-        {/* Auth Buttons or User Menu */}
-        {user ? (
-          <UserMenu />
-        ) : (
-          <div className="flex items-center gap-3">
-            <motion.button
-              onClick={() => openAuthModal('login')}
-              className="flex items-center gap-2 px-4 py-2 text-white hover:text-yellow-400 transition-colors duration-300 rounded-lg"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <FaSignInAlt className="text-sm" />
-              <span>Login</span>
-            </motion.button>
-            <motion.button
-              onClick={() => openAuthModal('register')}
-              className="flex items-center gap-2 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-black font-semibold rounded-lg transition-colors duration-300"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <FaUserPlus className="text-sm" />
-              <span>Sign Up</span>
-            </motion.button>
-          </div>
-        )}
+        {/* Favourites with Text */}
+        <Link
+          to="/favourites"
+          className={`relative hover:text-yellow-400 transition-colors duration-300 flex items-center gap-1 ${isActive('/favourites') ? 'text-yellow-400' : ''}`}
+          aria-label="Favourites"
+          onClick={closeMobileMenu}
+        >
+          Your Fav
+        </Link>
+
+        {/* Cart with Text */}
+        <div
+          className={`relative hover:text-yellow-400 transition-colors duration-300 flex items-center gap-1 cursor-pointer ${location.pathname === '/cart' ? 'text-yellow-400' : ''}`}
+          aria-label="Cart"
+          onClick={(e) => {
+            e.preventDefault();
+            openCart();
+            closeMobileMenu();
+          }}
+          onMouseEnter={() => setShowCartSummary(true)}
+          onMouseLeave={() => setShowCartSummary(false)}
+        >
+          Your CART
+          {cart.length > 0 && (
+            <span className="bg-accentGreen text-white rounded-full text-xs w-5 h-5 flex items-center justify-center font-bold animate-bounce-in">
+              {cart.length}
+            </span>
+          )}
+          {showCartSummary && cart.length > 0 && (
+            <div className="absolute top-full right-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-50 p-4">
+              <h4 className="font-bold text-sm mb-2">Cart Summary</h4>
+              <ul className="space-y-1 max-h-32 overflow-y-auto">
+                {cart.slice(0, 3).map(({ id, name, price, quantity }) => (
+                  <li key={id} className="text-xs flex justify-between">
+                    <span className="truncate">{name}</span>
+                    <span>₹{price} x {quantity}</span>
+                  </li>
+                ))}
+                {cart.length > 3 && <li className="text-xs text-gray-500">...and {cart.length - 3} more</li>}
+              </ul>
+              <div className="mt-2 text-sm font-semibold">Total: ₹{cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)}</div>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Mobile Cart and Menu */}
       <div className="md:hidden flex items-center gap-4 text-xl">
-        <motion.button
-          className="relative hover:text-yellow-400 transition-all duration-300 flex items-center gap-2 px-3 py-2 rounded-lg text-white"
+        <div
+          className="relative hover:text-yellow-400 transition-colors duration-300 flex items-center gap-1 cursor-pointer"
           aria-label="Cart"
           onClick={openCart}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
         >
-          <motion.div
-            animate={cartAnimation ? {
-              rotate: [0, -10, 10, -10, 0],
-              scale: [1, 1.2, 1]
-            } : {}}
-            transition={{ duration: 0.5 }}
-          >
-            <FaShoppingCart className="text-lg" />
-          </motion.div>
+          CART
           {cart.length > 0 && (
-            <motion.span
-              className="bg-green-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center font-bold"
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", stiffness: 500 }}
-              key={cart.length}
-            >
+            <span className="bg-accentGreen text-white rounded-full text-xs w-5 h-5 flex items-center justify-center font-bold animate-bounce-in">
               {cart.length}
-            </motion.span>
+            </span>
           )}
-        </motion.button>
-
-        <motion.button
-          className="flex flex-col justify-center items-center w-10 h-10 space-y-1 p-2 rounded-lg glass-morphism"
+        </div>
+        <button
+          className="flex flex-col justify-center items-center w-8 h-8 space-y-1"
           onClick={toggleMobileMenu}
           aria-label="Toggle mobile menu"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
         >
-          <motion.span
-            className={`block w-6 h-0.5 bg-yellow-400 transition-all duration-300 ${
-              mobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''
-            }`}
-            animate={{ backgroundColor: mobileMenuOpen ? '#ef4444' : '#fbbf24' }}
-          />
-          <motion.span
-            className={`block w-6 h-0.5 bg-yellow-400 transition-opacity duration-300 ${
-              mobileMenuOpen ? 'opacity-0' : ''
-            }`}
-            animate={{ backgroundColor: '#fbbf24' }}
-          />
-          <motion.span
-            className={`block w-6 h-0.5 bg-yellow-400 transition-all duration-300 ${
-              mobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''
-            }`}
-            animate={{ backgroundColor: mobileMenuOpen ? '#ef4444' : '#fbbf24' }}
-          />
-        </motion.button>
+          <span className={`block w-6 h-0.5 bg-black transition-transform duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></span>
+          <span className={`block w-6 h-0.5 bg-black transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-0' : ''}`}></span>
+          <span className={`block w-6 h-0.5 bg-black transition-transform duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></span>
+        </button>
       </div>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden absolute top-full left-0 right-0 glass-morphism shadow-2xl z-50 flex flex-col items-center py-6 space-y-4"
-            style={{
-              background: 'rgba(42, 42, 42, 0.95)',
-              backdropFilter: 'blur(20px)',
-              borderTop: '1px solid rgba(255, 255, 255, 0.1)'
-            }}
+      {mobileMenuOpen && (
+        <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg z-50 flex flex-col items-center py-4 space-y-4">
+          <Link
+            to="/"
+            className={`hover:text-yellow-400 transition-colors duration-300 ${isActive('/') ? 'text-yellow-400' : ''}`}
+            onClick={closeMobileMenu}
           >
-            {navItems.map((item, index) => (
-              <motion.div
-                key={item.path}
-                initial={{ x: -50, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Link
-                  to={item.path}
-                  className={`hover:text-yellow-400 transition-all duration-300 flex items-center gap-3 px-4 py-3 rounded-lg w-full ${
-                    isActive(item.path) ? 'text-yellow-400 bg-yellow-400/10' : 'text-white'
-                  }`}
-                  onClick={closeMobileMenu}
-                >
-                  <motion.div
-                    whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <item.icon className="text-lg" />
-                  </motion.div>
-                  <span className="font-semibold">{item.label}</span>
-                </Link>
-              </motion.div>
-            ))}
-
-            <motion.div
-              initial={{ x: -50, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Link
-                to="/favourites"
-                className={`relative hover:text-yellow-400 transition-all duration-300 flex items-center gap-3 px-4 py-3 rounded-lg w-full ${
-                  isActive('/favourites') ? 'text-yellow-400 bg-yellow-400/10' : 'text-white'
-                }`}
-                aria-label="Favourites"
-                onClick={closeMobileMenu}
-              >
-                <motion.div
-                  animate={{
-                    color: favourites.length > 0 ? '#ef4444' : '#ffffff'
-                  }}
-                >
-                  <FaHeart className="text-lg" />
-                </motion.div>
-                <span className="font-semibold">Your Fav</span>
-                {favourites.length > 0 && (
-                  <motion.span
-                    className="bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center font-bold"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: "spring", stiffness: 500 }}
-                  >
-                    {favourites.length}
-                  </motion.span>
-                )}
-              </Link>
-            </motion.div>
-
-            {/* Mobile Auth Buttons */}
-            {!user && (
-              <div className="flex flex-col gap-3 w-full px-4">
-                <motion.button
-                  onClick={() => {
-                    openAuthModal('login');
-                    closeMobileMenu();
-                  }}
-                  className="flex items-center gap-3 px-4 py-3 text-white hover:text-yellow-400 transition-colors duration-300 rounded-lg w-full justify-center"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <FaSignInAlt className="text-lg" />
-                  <span className="font-semibold">Login</span>
-                </motion.button>
-                <motion.button
-                  onClick={() => {
-                    openAuthModal('register');
-                    closeMobileMenu();
-                  }}
-                  className="flex items-center gap-3 px-4 py-3 bg-yellow-600 hover:bg-yellow-700 text-black font-semibold rounded-lg w-full justify-center transition-colors duration-300"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <FaUserPlus className="text-lg" />
-                  <span>Sign Up</span>
-                </motion.button>
-              </div>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.nav>
+            Home
+          </Link>
+          <Link
+            to="/products"
+            className={`hover:text-yellow-400 transition-colors duration-300 ${isActive('/products') ? 'text-yellow-400' : ''}`}
+            onClick={closeMobileMenu}
+          >
+            Products
+          </Link>
+          <Link
+            to="/gifts"
+            className={`hover:text-yellow-400 transition-colors duration-300 ${isActive('/gifts') ? 'text-yellow-400' : ''}`}
+            onClick={closeMobileMenu}
+          >
+            Gifts
+          </Link>
+          <Link
+            to="/about"
+            className={`hover:text-yellow-400 transition-colors duration-300 ${isActive('/about') ? 'text-yellow-400' : ''}`}
+            onClick={closeMobileMenu}
+          >
+            About Us
+          </Link>
+          <Link
+            to="/leadership"
+            className={`hover:text-yellow-400 transition-colors duration-300 ${isActive('/leadership') ? 'text-yellow-400' : ''}`}
+            onClick={closeMobileMenu}
+          >
+            Leadership
+          </Link>
+          <Link
+            to="/favourites"
+            className={`relative hover:text-yellow-400 transition-colors duration-300 flex items-center gap-1 ${isActive('/favourites') ? 'text-yellow-400' : ''}`}
+            aria-label="Favourites"
+            onClick={closeMobileMenu}
+          >
+            Your Fav
+          </Link>
+        </div>
+      )}
+    </nav>
   );
 };
 

@@ -184,5 +184,3 @@ input:focus, textarea:focus, select:focus {
 .marquee-text {
   animation: marquee 20s linear infinite;
 }
-
-

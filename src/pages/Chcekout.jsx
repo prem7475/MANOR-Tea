@@ -1,23 +1,20 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import { useCart } from '../hooks/useCart.jsx';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 
 const Checkout = () => {
-  const { register, handleSubmit, formState: { errors }, reset } = useForm();
-  const { cart, getTotal, clearCart } = useCart();
-  const navigate = useNavigate();
+  const [form, setForm] = useState({ phone: '', email: '', address: '' });
 
-  const onSubmit = (data) => {
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
     alert('Order placed successfully!');
-    console.log('Order data:', data);
-    clearCart(); // Clear cart after successful order
-    reset();
-    navigate('/'); // Navigate to home page
+    setForm({ phone: '', email: '', address: '' });
   };
 
   return (
-    <div className="p-8 max-w-lg mx-auto font-serif text-white bg-gradient-to-br from-gray-900 via-gray-800 to-black rounded min-h-screen">
+    <div className="p-8 max-w-lg mx-auto font-serif text-[#82512f] bg-[#fff8ea] rounded">
       <h1 className="text-3xl font-bold mb-6">Checkout</h1>
       {/* Progress Indicators */}
       <div className="flex items-center justify-between mb-8">
@@ -38,58 +35,37 @@ const Checkout = () => {
           <span className="ml-2 text-sm">Payment</span>
         </div>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-        <div>
-          <input
-            type="tel"
-            placeholder="Phone Number"
-            {...register('phone', {
-              required: 'Phone number is required',
-              pattern: {
-                value: /^[6-9]\d{9}$/,
-                message: 'Please enter a valid 10-digit Indian phone number'
-              }
-            })}
-            className="border border-[#c68e53] rounded p-2 w-full"
-          />
-          {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>}
-        </div>
-
-        <div>
-          <input
-            type="email"
-            placeholder="Email Address"
-            {...register('email', {
-              required: 'Email is required',
-              pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: 'Please enter a valid email address'
-              }
-            })}
-            className="border border-[#c68e53] rounded p-2 w-full"
-          />
-          {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
-        </div>
-
-        <div>
-          <textarea
-            placeholder="Delivery Address"
-            {...register('address', {
-              required: 'Delivery address is required',
-              minLength: {
-                value: 10,
-                message: 'Address must be at least 10 characters long'
-              }
-            })}
-            rows="4"
-            className="border border-[#c68e53] rounded p-2 w-full"
-          />
-          {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address.message}</p>}
-        </div>
-
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <input
+          type="tel"
+          name="phone"
+          placeholder="Phone Number"
+          value={form.phone}
+          onChange={handleChange}
+          className="border border-[#c68e53] rounded p-2"
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email Address"
+          value={form.email}
+          onChange={handleChange}
+          className="border border-[#c68e53] rounded p-2"
+          required
+        />
+        <textarea
+          name="address"
+          placeholder="Delivery Address"
+          value={form.address}
+          onChange={handleChange}
+          rows="4"
+          className="border border-[#c68e53] rounded p-2"
+          required
+        />
         <button
           type="submit"
-          className="bg-[#c68e53] text-white p-2 rounded hover:bg-[#82512f] transition-colors"
+          className="bg-[#c68e53] text-white p-2 rounded hover:bg-[#82512f]"
         >
           Place Order
         </button>

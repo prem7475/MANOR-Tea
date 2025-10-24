@@ -24,7 +24,7 @@ const Products = () => {
   }
 
   return (
-    <section className="p-2 sm:p-4 md:p-6 bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen font-serif text-white animate-fade-in">
+    <section className="p-2 sm:p-4 bg-manorBg min-h-screen font-serif text-manorText animate-fade-in">
       <h1 className="header-title text-lg sm:text-2xl animate-bounce-in">LEAF TEA</h1>
       <SearchBar searchTerm={searchTerm} onSearch={setSearchTerm} />
       <FilterBar filter={filter} onFilterChange={setFilter} />

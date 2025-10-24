@@ -9,7 +9,7 @@ const Contact = () => {
     setForm({ name: '', email: '', message: '' });
   };
   return (
-    <section className="p-8 bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white font-serif max-w-lg mx-auto min-h-screen">
+    <section className="p-8 bg-[#fff8ea] text-[#82512f] font-serif max-w-lg mx-auto">
       <h1 className="text-4xl font-bold mb-6">Contact Us</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input

@@ -1,7 +1,6 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import AddToCartButton from '../components/AddToCartButton.jsx';
-import Reviews from '../components/Reviews.jsx';
 import teaData from '../data/teaData.js';
 
 const ProductDetail = () => {
@@ -70,7 +69,32 @@ const product = teaData.find(p => p.id === id);
         </div>
 
         {/* Reviews Section */}
-        <Reviews productId={id} />
+        <div className="mt-8 bg-manorBg border border-manorAccent/20 rounded-lg shadow-md p-4">
+          <h2 className="font-serif font-bold text-lg mb-4">Customer Reviews</h2>
+          <div className="space-y-4">
+            <div className="border-b pb-4">
+              <div className="flex items-center mb-2">
+                <span className="font-semibold">John D.</span>
+                <span className="ml-2 text-yellow-500">★★★★★</span>
+              </div>
+              <p className="text-sm text-manorText/80">Excellent tea! Rich flavor and perfect for my morning routine.</p>
+            </div>
+            <div className="border-b pb-4">
+              <div className="flex items-center mb-2">
+                <span className="font-semibold">Sarah M.</span>
+                <span className="ml-2 text-yellow-500">★★★★☆</span>
+              </div>
+              <p className="text-sm text-manorText/80">Great quality, but a bit strong for my taste. Still, highly recommend!</p>
+            </div>
+            <div>
+              <div className="flex items-center mb-2">
+                <span className="font-semibold">Mike R.</span>
+                <span className="ml-2 text-yellow-500">★★★★★</span>
+              </div>
+              <p className="text-sm text-manorText/80">Love the packaging and the freshness. Will buy again.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

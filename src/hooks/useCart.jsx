@@ -56,19 +56,17 @@ export const CartProvider = ({ children }) => {
 
   const addToCart = product => {
     if (product.isSoldOut) {
-      setToast('This product is currently sold out!');
-      setTimeout(() => setToast(null), 3000);
+      // Do not add sold out products to cart
       return;
     }
     setCart(prev => {
       const exists = prev.find(p => p.id === product.id);
       if (exists) {
-        setToast('Product quantity updated in cart!');
         return prev.map(p => p.id === product.id ? { ...p, quantity: p.quantity + 1 } : p);
       }
-      setToast('Product added to cart!');
       return [...prev, { ...product, quantity: 1 }];
     });
+    setToast('Product added to cart!');
     setCartAnimation(true);
     setTimeout(() => setToast(null), 3000);
     setTimeout(() => setCartAnimation(false), 600);
@@ -77,26 +75,18 @@ export const CartProvider = ({ children }) => {
   const updateQuantity = (productId, quantity) => {
     if (quantity <= 0) {
       removeFromCart(productId);
-      setToast('Product removed from cart!');
-      setTimeout(() => setToast(null), 3000);
       return;
     }
     setCart(prev => prev.map(p => p.id === productId ? { ...p, quantity } : p));
-    setToast('Quantity updated!');
-    setTimeout(() => setToast(null), 3000);
   };
 
   const removeFromCart = productId => {
     setCart(prev => prev.filter(p => p.id !== productId));
-    setToast('Product removed from cart!');
-    setTimeout(() => setToast(null), 3000);
   };
 
   const clearCart = () => {
     setCart([]);
     clearAppliedOffer();
-    setToast('Cart cleared!');
-    setTimeout(() => setToast(null), 3000);
   };
 
   return (

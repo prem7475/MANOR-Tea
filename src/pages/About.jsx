@@ -2,7 +2,7 @@ import React from 'react';
 
 const About = () => {
   return (
-    <div className="p-8 bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white font-serif min-h-screen">
+    <div className="p-8 bg-[#fff8ea] text-[#82512f] font-serif">
       <h2 className="text-3xl font-bold mb-4">Our Story</h2>
       <p className="mb-8">
         Manor Tea Company has been crafting exquisite tea for over a century, producing the finest leaves sourced from our plantations.

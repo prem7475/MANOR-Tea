@@ -95,10 +95,10 @@ const Cart = () => {
     }
   };
 
-  if (cart.length === 0) return <p className="p-4 md:p-8 font-serif text-white bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen animate-fade-in">Your cart is empty.</p>;
+  if (cart.length === 0) return <p className="p-4 md:p-8 font-serif text-manorText animate-fade-in">Your cart is empty.</p>;
 
   return (
-    <section className="relative p-4 sm:p-6 md:p-10 min-h-screen font-serif text-white bg-gradient-to-br from-gray-900 via-gray-800 to-black animate-fade-in">
+    <section className="relative p-4 md:p-8 min-h-screen font-serif text-manorText animate-fade-in">
       <video autoPlay muted loop className="absolute inset-0 w-screen h-screen object-cover z-0 pointer-events-none">
         <source src="/2.mp4" type="video/mp4" />
       </video>
@@ -107,18 +107,18 @@ const Cart = () => {
         <div className="max-w-4xl mx-auto">
           <ul className="space-y-4 md:space-y-6">
             {cart.map(({ id, name, price, quantity, image }) => (
-              <li key={id} className="bg-gray-800 rounded-lg shadow-md p-4 md:p-6 flex flex-col md:flex-row md:items-center md:space-x-6 hover:shadow-lg transition-shadow border border-gray-700">
+              <li key={id} className="bg-white rounded-lg shadow-md p-4 md:p-6 flex flex-col md:flex-row md:items-center md:space-x-6 hover:shadow-lg transition-shadow">
                 <div className="flex items-center space-x-4 md:space-x-6">
                   <img src={image || '/imgtea.jpeg'} alt={name} className="w-16 h-16 md:w-20 md:h-20 object-cover rounded flex-shrink-0" />
                   <div className="flex-1 min-w-0">
                     <h2 className="text-sm md:text-xl font-semibold leading-tight">{name}</h2>
-                    <p className="text-amber-400 text-xs md:text-base">₹{price} x {quantity}</p>
+                    <p className="text-manorAccent text-xs md:text-base">₹{price} x {quantity}</p>
                   </div>
                 </div>
                 <div className="flex items-center justify-between mt-4 md:mt-0 md:space-x-2">
                   <div className="flex items-center space-x-2">
                     <button
-                    className="bg-amber-600 text-white px-2 py-1 md:px-3 md:py-1 rounded hover:bg-amber-700 disabled:opacity-50 text-sm transition-colors"
+                      className="bg-manorAccent text-white px-2 py-1 md:px-3 md:py-1 rounded hover:bg-manorDark disabled:opacity-50 text-sm"
                       onClick={() => updateQuantity(id, quantity - 1)}
                       disabled={quantity <= 1}
                     >
@@ -126,14 +126,14 @@ const Cart = () => {
                     </button>
                     <span className="px-2 md:px-3 text-sm md:text-base">{quantity}</span>
                     <button
-                      className="bg-amber-600 text-white px-2 py-1 md:px-3 md:py-1 rounded hover:bg-amber-700 text-sm transition-colors"
+                      className="bg-manorAccent text-white px-2 py-1 md:px-3 md:py-1 rounded hover:bg-manorDark text-sm"
                       onClick={() => updateQuantity(id, quantity + 1)}
                     >
                       +
                     </button>
                   </div>
                   <button
-                    className="bg-red-600 text-white px-3 py-1 md:px-4 md:py-2 rounded hover:bg-red-700 transition-colors text-sm md:text-base shadow-md hover:shadow-lg"
+                    className="bg-red-500 text-white px-3 py-1 md:px-4 md:py-2 rounded hover:bg-red-600 transition-colors text-sm md:text-base"
                     onClick={() => removeFromCart(id)}
                   >
                     Remove
@@ -143,7 +143,7 @@ const Cart = () => {
             ))}
           </ul>
           {/* Coupon Section */}
-          <div className="mt-6 md:mt-8 bg-gray-800 rounded-lg shadow-md p-4 md:p-6 border border-gray-700">
+          <div className="mt-6 md:mt-8 bg-white rounded-lg shadow-md p-4 md:p-6">
             <h3 className="text-lg font-semibold mb-2">Apply Coupon</h3>
             <div className="flex space-x-2 mb-4">
               <input
@@ -155,7 +155,7 @@ const Cart = () => {
               />
               <button
                 onClick={applyCoupon}
-                className="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-4 py-2 rounded hover:from-amber-700 hover:to-amber-800 transition-colors font-semibold text-sm shadow-md hover:shadow-lg"
+                className="bg-[#c68e53] text-white px-4 py-2 rounded hover:bg-[#82512f] transition-colors font-semibold text-sm"
                 disabled={!!appliedOffer}
               >
                 Apply
@@ -166,7 +166,7 @@ const Cart = () => {
                 Applied: {appliedOffer.title} (-₹{appliedOffer.discount.toFixed(2)})
                 <button
                   onClick={clearAppliedOffer}
-                  className="ml-2 bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-xs transition-colors shadow-md hover:shadow-lg"
+                  className="ml-2 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-xs"
                 >
                   Remove
                 </button>
@@ -174,7 +174,7 @@ const Cart = () => {
             )}
             <button
               onClick={() => setShowOffers(true)}
-              className="text-amber-400 underline text-sm hover:text-amber-300 mb-4 w-full text-left border border-amber-400 p-2 rounded bg-gray-700 hover:bg-gray-600 transition-colors"
+              className="text-[#c68e53] underline text-sm hover:text-[#82512f] mb-4 w-full text-left border border-[#c68e53] p-2 rounded bg-[#fff8ea]"
             >
               Show all Offers
             </button>
@@ -188,7 +188,7 @@ const Cart = () => {
 
             <Link
               to="/payment"
-              className="block mt-6 bg-gradient-to-r from-amber-600 to-amber-700 text-white px-4 py-2 md:px-6 md:py-3 rounded-lg text-center hover:from-amber-700 hover:to-amber-800 transition-all duration-300 font-semibold text-sm md:text-base shadow-lg hover:shadow-xl"
+              className="block mt-6 bg-[#c68e53] text-white px-4 py-2 md:px-6 md:py-3 rounded-lg text-center hover:bg-[#82512f] transition-colors font-semibold text-sm md:text-base"
             >
               Proceed to Checkout
             </Link>
@@ -200,16 +200,16 @@ const Cart = () => {
               <div className="absolute inset-0 overflow-hidden">
                 <div className="absolute inset-y-0 right-0 flex max-w-full">
                   <div className="w-screen max-w-md">
-                    <div className="h-full flex flex-col bg-black shadow-xl">
+                    <div className="h-full flex flex-col bg-white shadow-xl">
                       <div className="px-4 py-6 sm:px-6">
                         <div className="flex items-start justify-between">
-                          <h2 className="text-lg font-medium text-amber-400" id="slide-over-title">
+                          <h2 className="text-lg font-medium text-[#82512f]" id="slide-over-title">
                             Available Offers
                           </h2>
                           <div className="ml-3 flex h-7 items-center">
                             <button
                               type="button"
-                              className="relative rounded-md bg-black text-gray-400 hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2"
+                              className="relative rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#c68e53] focus:ring-offset-2"
                               onClick={() => setShowOffers(false)}
                             >
                               <span className="sr-only">Close panel</span>
@@ -225,20 +225,20 @@ const Cart = () => {
                           {offers.map(offer => {
                             const eligible = isEligible(offer);
                             return (
-                              <div key={offer.code} className="bg-gray-800 rounded-lg p-4 border border-gray-600">
+                              <div key={offer.code} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
                                 <div className="flex justify-between items-start mb-2">
-                                  <h4 className="font-bold text-amber-400 text-sm">{offer.title}</h4>
+                                  <h4 className="font-bold text-[#82512f] text-sm">{offer.title}</h4>
                                   <button
                                     onClick={() => applyOffer(offer)}
                                     disabled={appliedOffer && appliedOffer.code === offer.code || !eligible}
-                                    className="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-3 py-1 rounded text-xs hover:from-amber-700 hover:to-amber-800 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-600 transition-colors"
+                                    className="bg-[#c68e53] text-white px-3 py-1 rounded text-xs hover:bg-[#82512f] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-400"
                                   >
                                     {appliedOffer && appliedOffer.code === offer.code ? 'Applied' : eligible ? 'Apply' : `Min ₹${offer.minOrder}`}
                                   </button>
                                 </div>
-                                <p className="text-sm mb-2 text-gray-300">{offer.desc}</p>
-                                {!eligible && <p className="text-xs text-red-400 mb-2">Minimum order: ₹{offer.minOrder}</p>}
-                                <ul className="text-xs text-gray-400 space-y-1">
+                                <p className="text-sm mb-2 text-gray-700">{offer.desc}</p>
+                                {!eligible && <p className="text-xs text-red-600 mb-2">Minimum order: ₹{offer.minOrder}</p>}
+                                <ul className="text-xs text-gray-600 space-y-1">
                                   {offer.terms.map(term => (
                                     <li key={term}>• {term}</li>
                                   ))}

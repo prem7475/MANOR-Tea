@@ -81,8 +81,8 @@ const Payment = () => {
             justify-content: center;
             align-items: center;
             height: 80vh;
-            background: linear-gradient(to bottom right, #1f2937, #374151, #000000); /* gradient */
-            color: #ffffff; /* white */
+            background-color: #fff8ea; /* warm beige */
+            color: #ffcc00; /* Occur yellow */
             font-family: 'Georgia', serif;
             font-size: 2.5rem;
             position: relative;
@@ -123,7 +123,7 @@ const Payment = () => {
       <video autoPlay muted loop className="absolute inset-0 w-screen h-screen object-fill z-0">
         <source src="/3.mp4" type="video/mp4" />
       </video>
-      <div className="relative z-10 payment-page-container p-4 sm:p-6">
+      <div className="relative z-10 payment-page-container">
         <h1 className="payment-title">Payment & Address Details</h1>
         <form onSubmit={handlePaymentSubmit} className="payment-form">
           <input
@@ -162,8 +162,8 @@ const Payment = () => {
           max-width: 400px;
           margin: 1.5rem auto;
           padding: 1.5rem;
-          background: linear-gradient(to bottom right, #1f2937, #374151, #000000); /* gradient */
-          color: #ffffff; /* white */
+          background-color: #fff8ea; /* warm beige */
+          color: #3e2f1c; /* dark brown */
           font-family: 'Georgia', serif;
           border-radius: 10px;
           box-shadow: 0 0 15px #c68e53;
@@ -185,7 +185,6 @@ const Payment = () => {
           font-size: 1rem;
           font-family: 'Georgia', serif;
           color: #3e2f1c;
-          background-color: #ffffff;
         }
         .pay-now-button {
           width: 100%;
