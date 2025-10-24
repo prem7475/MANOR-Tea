@@ -1,5 +1,6 @@
-# TODO: Resolve React Peer Dependency Conflict
+# TODO: Remove CSS Animations and Optimize for Performance
 
-- [x] Edit package.json to downgrade React and React-DOM to ^18.2.0
-- [x] Run npm install to update dependencies
-- [x] Run npm run build to test the build
+- [x] Remove all animation keyframes and classes from custom.css
+- [x] Simplify product-card hover effects to prevent lag
+- [x] Build and test the application
+- [ ] Commit changes
