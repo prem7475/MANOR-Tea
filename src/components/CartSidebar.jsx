@@ -120,11 +120,11 @@ const CartSidebar = ({ isOpen, onClose }) => {
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 right-0 h-full w-80 max-w-full bg-white shadow-lg z-50 transform transition-transform duration-300 ${
+        className={`fixed top-0 right-0 h-full w-full sm:w-80 max-w-full bg-white shadow-lg z-50 transform transition-transform duration-300 ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         } overflow-y-auto`}
       >
-        <div className="p-4">
+        <div className="sidebar-container">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">Your Cart & Checkout</h2>
             <button
@@ -156,15 +156,15 @@ const CartSidebar = ({ isOpen, onClose }) => {
                       </div>
                       <div className="flex items-center space-x-1">
                         <button
-                          className="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs"
+                          className="bg-gray-200 text-gray-700 px-3 py-2 rounded text-base min-h-[44px] min-w-[44px]"
                           onClick={() => updateQuantity(id, quantity - 1)}
                           disabled={quantity <= 1}
                         >
                           -
                         </button>
-                        <span className="px-2 text-xs">{quantity}</span>
+                        <span className="px-3 text-base min-h-[44px] flex items-center">{quantity}</span>
                         <button
-                          className="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs"
+                          className="bg-gray-200 text-gray-700 px-3 py-2 rounded text-base min-h-[44px] min-w-[44px]"
                           onClick={() => updateQuantity(id, quantity + 1)}
                         >
                           +
@@ -197,11 +197,11 @@ const CartSidebar = ({ isOpen, onClose }) => {
                     placeholder="Enter coupon code"
                     value={coupon}
                     onChange={(e) => setCoupon(e.target.value)}
-                    className="flex-1 border border-gray-300 rounded p-2 text-sm"
+                    className="flex-1 border border-gray-300 rounded p-3 text-base min-h-[44px]"
                   />
                   <button
                     onClick={applyCoupon}
-                    className="bg-[#c68e53] text-white px-4 py-2 rounded hover:bg-[#82512f] transition-colors font-semibold text-sm"
+                    className="bg-[#c68e53] text-white px-4 py-3 rounded hover:bg-[#82512f] transition-colors font-semibold text-base min-h-[44px]"
                     disabled={!!appliedOffer}
                   >
                     Apply
@@ -273,7 +273,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
                     placeholder="Phone Number"
                     value={form.phone}
                     onChange={handleChange}
-                    className="w-full border border-gray-300 rounded p-2 text-sm"
+                    className="w-full border border-gray-300 rounded p-3 text-base min-h-[44px]"
                     required
                   />
                   <input
@@ -282,7 +282,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
                     placeholder="Email Address"
                     value={form.email}
                     onChange={handleChange}
-                    className="w-full border border-gray-300 rounded p-2 text-sm"
+                    className="w-full border border-gray-300 rounded p-3 text-base min-h-[44px]"
                     required
                   />
                   <textarea
@@ -291,12 +291,12 @@ const CartSidebar = ({ isOpen, onClose }) => {
                     value={form.address}
                     onChange={handleChange}
                     rows="3"
-                    className="w-full border border-gray-300 rounded p-2 text-sm"
+                    className="w-full border border-gray-300 rounded p-3 text-base min-h-[44px]"
                     required
                   />
                   <button
                     type="submit"
-                    className="w-full bg-accentGreen text-white py-2 rounded hover:bg-accentHover transition-colors font-semibold"
+                    className="w-full bg-accentGreen text-white py-3 rounded hover:bg-accentHover transition-colors font-semibold text-lg min-h-[44px]"
                   >
                     Place Order
                   </button>

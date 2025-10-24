@@ -33,8 +33,8 @@ const ProductCard = ({ id, name, description, price, originalPrice, discountPerc
             SOLD OUT
           </div>
         )}
-        <Link to={`/product/${id}`} className="flex flex-row md:flex-col items-center md:items-start flex-grow min-w-0">
-          <div className="image-container overflow-hidden rounded-md mb-0 md:mb-4 w-20 h-20 md:w-full md:h-48 flex-shrink-0" onClick={openModal}>
+        <Link to={`/product/${id}`} className="flex flex-row md:flex-col items-center md:items-start flex-grow min-w-0 relative">
+          <div className="image-container overflow-hidden rounded-md mb-0 md:mb-4 w-20 h-20 md:w-full md:h-48 flex-shrink-0 relative" onClick={openModal}>
             <picture>
               <source srcSet={image.replace(/\.(jpg|jpeg|png)$/i, '.webp')} type="image/webp" />
               <img
@@ -44,6 +44,10 @@ const ProductCard = ({ id, name, description, price, originalPrice, discountPerc
                 loading="lazy"
               />
             </picture>
+            {/* Add to Cart Button overlay on mobile */}
+            <div className="absolute bottom-1 right-1 md:hidden">
+              <AddToCartButton className="px-2 py-1 text-xs rounded-md min-h-[32px] min-w-[32px]" product={{ id, name, price }} />
+            </div>
           </div>
           <div className="flex flex-col flex-grow ml-2 md:ml-0 min-w-0">
             <h3 className="font-serif font-semibold text-[10px] md:text-sm mb-1 md:mb-2 text-manorText uppercase tracking-wide truncate">{name}</h3>
@@ -57,7 +61,10 @@ const ProductCard = ({ id, name, description, price, originalPrice, discountPerc
             </div>
           </div>
         </Link>
-        <AddToCartButton className="w-20 h-6 md:w-auto md:h-auto" product={{ id, name, price }} />
+        {/* Add to Cart Button below on desktop */}
+        <div className="hidden md:block">
+          <AddToCartButton className="w-full" product={{ id, name, price }} />
+        </div>
       </div>
       {modalOpen && <ImageModal image={image} name={name} onClose={closeModal} />}
     </>

@@ -123,7 +123,7 @@ const Payment = () => {
       <video autoPlay muted loop className="absolute inset-0 w-screen h-screen object-fill z-0">
         <source src="/3.mp4" type="video/mp4" />
       </video>
-      <div className="relative z-10 payment-page-container">
+      <div className="relative z-10 payment-container">
         <h1 className="payment-title">Payment & Address Details</h1>
         <form onSubmit={handlePaymentSubmit} className="payment-form">
           <input
@@ -152,7 +152,7 @@ const Payment = () => {
             required
             className="payment-textarea"
           />
-          <button type="submit" className="pay-now-button">
+          <button type="submit" className="payment-button">
             Pay Now
           </button>
         </form>
@@ -160,20 +160,31 @@ const Payment = () => {
       <style>{`
         .payment-page-container {
           max-width: 400px;
-          margin: 1.5rem auto;
-          padding: 1.5rem;
+          margin: 0.5rem auto;
+          padding: 0.5rem;
           background-color: #fff8ea; /* warm beige */
           color: #3e2f1c; /* dark brown */
           font-family: 'Georgia', serif;
           border-radius: 10px;
           box-shadow: 0 0 15px #c68e53;
         }
+        @media (min-width: 640px) {
+          .payment-page-container {
+            margin: 1.5rem auto;
+            padding: 1.5rem;
+          }
+        }
         .payment-title {
           text-align: center;
-          font-size: 1.5rem;
+          font-size: 1rem;
           margin-bottom: 1rem;
           color: #82512f; /* warm brown */
           text-shadow: 0 0 10px #c68e53;
+        }
+        @media (min-width: 640px) {
+          .payment-title {
+            font-size: 1.5rem;
+          }
         }
         .payment-form input,
         .payment-form textarea {
@@ -182,9 +193,17 @@ const Payment = () => {
           margin-bottom: 1rem;
           border-radius: 5px;
           border: 1px solid #c68e53;
-          font-size: 1rem;
+          font-size: 0.9rem;
           font-family: 'Georgia', serif;
           color: #3e2f1c;
+          min-height: 44px;
+        }
+        @media (min-width: 640px) {
+          .payment-form input,
+          .payment-form textarea {
+            padding: 0.5rem;
+            font-size: 1rem;
+          }
         }
         .pay-now-button {
           width: 100%;
@@ -195,9 +214,16 @@ const Payment = () => {
           border: none;
           border-radius: 5px;
           cursor: pointer;
-          font-size: 1.2rem;
+          font-size: 1rem;
           box-shadow: 0 0 10px #c68e53;
           transition: background-color 0.3s ease;
+          min-height: 44px;
+        }
+        @media (min-width: 640px) {
+          .pay-now-button {
+            padding: 0.75rem;
+            font-size: 1.2rem;
+          }
         }
         .pay-now-button:hover {
           background-color: #82512f;

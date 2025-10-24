@@ -105,35 +105,35 @@ const Cart = () => {
       <div className="relative z-10">
         <h1 className="text-2xl md:text-4xl font-bold mb-6 md:mb-8 text-center">Your Cart</h1>
         <div className="max-w-4xl mx-auto">
-          <ul className="space-y-4 md:space-y-6">
+          <ul className="cart-list">
             {cart.map(({ id, name, price, quantity, image }) => (
-              <li key={id} className="bg-white rounded-lg shadow-md p-4 md:p-6 flex flex-col md:flex-row md:items-center md:space-x-6 hover:shadow-lg transition-shadow">
-                <div className="flex items-center space-x-4 md:space-x-6">
-                  <img src={image || '/imgtea.jpeg'} alt={name} className="w-16 h-16 md:w-20 md:h-20 object-cover rounded flex-shrink-0" />
+              <li key={id} className="cart-item bg-white rounded-lg shadow-md flex flex-col md:flex-row md:items-center md:space-x-6 hover:shadow-lg transition-shadow">
+                <div className="flex items-center space-x-2 md:space-x-6">
+                  <img src={image || '/imgtea.jpeg'} alt={name} className="cart-image object-cover rounded flex-shrink-0" />
                   <div className="flex-1 min-w-0">
-                    <h2 className="text-sm md:text-xl font-semibold leading-tight">{name}</h2>
-                    <p className="text-manorAccent text-xs md:text-base">₹{price} x {quantity}</p>
+                    <h2 className="cart-name font-semibold leading-tight">{name}</h2>
+                    <p className="cart-price text-manorAccent">₹{price} x {quantity}</p>
                   </div>
                 </div>
-                <div className="flex items-center justify-between mt-4 md:mt-0 md:space-x-2">
-                  <div className="flex items-center space-x-2">
+                <div className="flex items-center justify-between cart-controls md:space-x-2">
+                  <div className="flex items-center space-x-1 md:space-x-2">
                     <button
-                      className="bg-manorAccent text-white px-2 py-1 md:px-3 md:py-1 rounded hover:bg-manorDark disabled:opacity-50 text-sm"
+                      className="cart-button bg-manorAccent text-white rounded hover:bg-manorDark disabled:opacity-50 min-h-[44px] min-w-[44px]"
                       onClick={() => updateQuantity(id, quantity - 1)}
                       disabled={quantity <= 1}
                     >
                       -
                     </button>
-                    <span className="px-2 md:px-3 text-sm md:text-base">{quantity}</span>
+                    <span className="cart-quantity min-h-[44px] flex items-center">{quantity}</span>
                     <button
-                      className="bg-manorAccent text-white px-2 py-1 md:px-3 md:py-1 rounded hover:bg-manorDark text-sm"
+                      className="cart-button bg-manorAccent text-white rounded hover:bg-manorDark min-h-[44px] min-w-[44px]"
                       onClick={() => updateQuantity(id, quantity + 1)}
                     >
                       +
                     </button>
                   </div>
                   <button
-                    className="bg-red-500 text-white px-3 py-1 md:px-4 md:py-2 rounded hover:bg-red-600 transition-colors text-sm md:text-base"
+                    className="cart-remove bg-red-500 text-white rounded hover:bg-red-600 transition-colors min-h-[44px]"
                     onClick={() => removeFromCart(id)}
                   >
                     Remove

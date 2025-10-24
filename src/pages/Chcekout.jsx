@@ -14,25 +14,25 @@ const Checkout = () => {
   };
 
   return (
-    <div className="p-8 max-w-lg mx-auto font-serif text-[#82512f] bg-[#fff8ea] rounded">
-      <h1 className="text-3xl font-bold mb-6">Checkout</h1>
+    <div className="checkout-container max-w-lg mx-auto font-serif text-[#82512f] bg-[#fff8ea] rounded min-h-screen">
+      <h1 className="checkout-title font-bold mb-6">Checkout</h1>
       {/* Progress Indicators */}
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center">
-          <div className="w-8 h-8 bg-[#c68e53] text-white rounded-full flex items-center justify-center text-sm font-bold">1</div>
-          <span className="ml-2 text-sm">Cart</span>
+          <div className="checkout-progress bg-[#c68e53] text-white rounded-full flex items-center justify-center font-bold">1</div>
+          <span className="ml-2">Cart</span>
         </div>
-        <div className="flex-1 h-1 bg-gray-300 mx-4">
+        <div className="flex-1 h-1 bg-gray-300 mx-2 md:mx-4">
           <div className="h-1 bg-[#c68e53] w-full"></div>
         </div>
         <div className="flex items-center">
-          <div className="w-8 h-8 bg-[#c68e53] text-white rounded-full flex items-center justify-center text-sm font-bold">2</div>
-          <span className="ml-2 text-sm font-bold">Checkout</span>
+          <div className="checkout-progress bg-[#c68e53] text-white rounded-full flex items-center justify-center font-bold">2</div>
+          <span className="ml-2 font-bold">Checkout</span>
         </div>
-        <div className="flex-1 h-1 bg-gray-300 mx-4"></div>
+        <div className="flex-1 h-1 bg-gray-300 mx-2 md:mx-4"></div>
         <div className="flex items-center">
-          <div className="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold">3</div>
-          <span className="ml-2 text-sm">Payment</span>
+          <div className="checkout-progress bg-gray-300 text-gray-600 rounded-full flex items-center justify-center font-bold">3</div>
+          <span className="ml-2">Payment</span>
         </div>
       </div>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -42,7 +42,7 @@ const Checkout = () => {
           placeholder="Phone Number"
           value={form.phone}
           onChange={handleChange}
-          className="border border-[#c68e53] rounded p-2"
+          className="checkout-input border border-[#c68e53] rounded"
           required
         />
         <input
@@ -51,7 +51,7 @@ const Checkout = () => {
           placeholder="Email Address"
           value={form.email}
           onChange={handleChange}
-          className="border border-[#c68e53] rounded p-2"
+          className="checkout-input border border-[#c68e53] rounded"
           required
         />
         <textarea
@@ -60,12 +60,12 @@ const Checkout = () => {
           value={form.address}
           onChange={handleChange}
           rows="4"
-          className="border border-[#c68e53] rounded p-2"
+          className="checkout-input border border-[#c68e53] rounded"
           required
         />
         <button
           type="submit"
-          className="bg-[#c68e53] text-white p-2 rounded hover:bg-[#82512f]"
+          className="checkout-button bg-[#c68e53] text-white rounded hover:bg-[#82512f]"
         >
           Place Order
         </button>

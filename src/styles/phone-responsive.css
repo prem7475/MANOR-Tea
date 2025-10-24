@@ -1,0 +1,118 @@
+/* Phone responsive styles (max-width: 767px) */
+
+@media (max-width: 767px) {
+  /* Product Card */
+  .product-card {
+    padding: 0.5rem;
+    flex-direction: row;
+    align-items: center;
+    height: auto;
+  }
+  .image-container {
+    width: 5rem;
+    height: 5rem;
+    margin-bottom: 0;
+  }
+  .product-card h3 {
+    font-size: 0.625rem;
+    margin-bottom: 0.25rem;
+  }
+  .product-card p {
+    font-size: 0.5rem;
+    margin-bottom: 0.25rem;
+  }
+  .product-card .font-semibold {
+    font-size: 0.75rem;
+  }
+  .product-card .text-xs {
+    font-size: 0.5rem;
+  }
+  .product-card .text-[8px] {
+    font-size: 0.5rem;
+  }
+
+  /* Add to Cart Button */
+  .product-card button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    min-height: 2rem;
+    min-width: 2rem;
+    border-radius: 0.25rem;
+  }
+
+  /* Checkout page */
+  .checkout-container {
+    padding: 0.5rem;
+  }
+  .checkout-title {
+    font-size: 1.125rem;
+  }
+  .checkout-progress {
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 0.75rem;
+  }
+  .checkout-input {
+    padding: 0.5rem;
+    font-size: 1rem;
+  }
+  .checkout-button {
+    padding: 0.75rem;
+    font-size: 1rem;
+  }
+
+  /* Payment page */
+  .payment-container {
+    margin: 0.5rem auto;
+    padding: 0.5rem;
+  }
+  .payment-title {
+    font-size: 1rem;
+  }
+  .payment-input {
+    padding: 0.5rem;
+    font-size: 1rem;
+  }
+  .payment-button {
+    padding: 0.75rem;
+    font-size: 1rem;
+  }
+
+  /* Cart page */
+  .cart-list {
+    gap: 0.5rem;
+  }
+  .cart-item {
+    padding: 0.5rem;
+  }
+  .cart-image {
+    width: 3rem;
+    height: 3rem;
+  }
+  .cart-name {
+    font-size: 0.875rem;
+  }
+  .cart-price {
+    font-size: 0.75rem;
+  }
+  .cart-controls {
+    margin-top: 0.5rem;
+  }
+  .cart-button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+  .cart-quantity {
+    padding: 0.5rem;
+    font-size: 0.875rem;
+  }
+  .cart-remove {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  /* CartSidebar */
+  .sidebar-container {
+    padding: 0.5rem;
+  }
+}
