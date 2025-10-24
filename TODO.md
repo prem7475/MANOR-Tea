@@ -3,4 +3,4 @@
 - [x] Remove all animation keyframes and classes from custom.css
 - [x] Simplify product-card hover effects to prevent lag
 - [x] Build and test the application
-- [ ] Commit changes
+- [x] Commit changes
