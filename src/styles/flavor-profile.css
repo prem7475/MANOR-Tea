@@ -1,0 +1,77 @@
+/* Flavor Profile Visualizer */
+.flavor-bar {
+  height: 8px;
+  background-color: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.flavor-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.flavor-bar-fill.strength {
+  background: linear-gradient(90deg, #8b4513, #daa520);
+}
+
+.flavor-bar-fill.aroma {
+  background: linear-gradient(90deg, #228b22, #32cd32);
+}
+
+.flavor-bar-fill.spiciness {
+  background: linear-gradient(90deg, #dc143c, #ff6347);
+}
+
+/* Page Transitions */
+.page-transition {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.page-transition.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Icon Animations */
+.icon-jiggle {
+  animation: jiggle 0.5s ease-in-out;
+}
+
+.icon-pop {
+  animation: pop 0.3s ease-out;
+}
+
+@keyframes jiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* Bundle Card Hover Effects */
+.bundle-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.bundle-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Process Stepper Animations */
+.process-step {
+  transition: transform 0.3s ease;
+}
+
+.process-step:hover {
+  transform: translateY(-2px);
+}

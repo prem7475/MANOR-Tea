@@ -12,7 +12,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
+  const { login, register } = useAuth();
 
   // Reset form when modal opens
   React.useEffect(() => {
@@ -65,55 +65,20 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
     if (!validateForm()) return;
 
     setIsLoading(true);
+    setErrors({});
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
+      let result;
       if (mode === 'login') {
-        // Check if user exists in localStorage
-        const users = JSON.parse(localStorage.getItem('users') || '[]');
-        const user = users.find(u => u.email === formData.email && u.password === formData.password);
-
-        if (user) {
-          login({
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            avatar: user.avatar
-          });
-          onClose();
-        } else {
-          setErrors({ general: 'Invalid email or password' });
-        }
+        result = await login(formData.email, formData.password);
       } else {
-        // Register new user
-        const users = JSON.parse(localStorage.getItem('users') || '[]');
-        const existingUser = users.find(u => u.email === formData.email);
+        result = await register(formData.name, formData.email, formData.password);
+      }
 
-        if (existingUser) {
-          setErrors({ email: 'Email already exists' });
-        } else {
-          const newUser = {
-            id: Date.now(),
-            name: formData.name,
-            email: formData.email,
-            password: formData.password,
-            avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${formData.name}`,
-            createdAt: new Date().toISOString()
-          };
-
-          users.push(newUser);
-          localStorage.setItem('users', JSON.stringify(users));
-
-          login({
-            id: newUser.id,
-            name: newUser.name,
-            email: newUser.email,
-            avatar: newUser.avatar
-          });
-          onClose();
-        }
+      if (result.success) {
+        onClose();
+      } else {
+        setErrors({ general: result.message });
       }
     } catch (error) {
       setErrors({ general: 'Something went wrong. Please try again.' });

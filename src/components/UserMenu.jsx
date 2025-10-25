@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext.jsx';
 import { Link } from 'react-router-dom';
-import { FaUser, FaSignOutAlt, FaCog, FaShoppingBag } from 'react-icons/fa';
+import { FaUser, FaSignOutAlt, FaCog, FaShoppingBag, FaTachometerAlt } from 'react-icons/fa';
 
 const UserMenu = () => {
   const { user, logout } = useAuth();
@@ -65,14 +65,7 @@ const UserMenu = () => {
             </div>
 
             <div className="py-2">
-              <Link
-                to="/dashboard"
-                className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-700/50 transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                <FaUser className="w-4 h-4" />
-                <span>Dashboard</span>
-              </Link>
+
 
               <Link
                 to="/orders"

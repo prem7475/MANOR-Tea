@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar.jsx';
 import Marquee from './components/Marquee.jsx';
 import Footer from './components/Footer.jsx';
@@ -11,16 +11,18 @@ import Leadership from './pages/Leadership.jsx';
 import Contact from './pages/Contact.jsx';
 import Products from './pages/Products.jsx';
 import Gifts from './pages/Gifts.jsx';
+import CustomHamper from './pages/CustomHamper.jsx';
 import ProductDetail from './pages/ProductDetail.jsx';
 import Favourites from './pages/Favourites.jsx';
 import HelpDesk from './pages/HelpDesk.jsx';
+import Offers from './pages/Offers.jsx';
+
 import Cart from './pages/Cart.jsx';
 import Checkout from './pages/Chcekout.jsx';
 import Payment from './pages/Payment.jsx';
 import Toast from './components/Toast.jsx';
 import CartSidebar from './components/CartSidebar.jsx';
-import { CartProvider, useCart } from './hooks/useCart.jsx';
-import { FavouritesProvider } from './context/FavouritesContext.jsx';
+import { useCart } from './hooks/useCart.jsx';
 
 const CartPage = () => {
   const { setIsCartOpen } = useCart();
@@ -47,9 +49,12 @@ const AppContent = () => {
           <Route path="/contact" element={<Contact />} />
           <Route path="/products" element={<Products />} />
           <Route path="/gifts" element={<Gifts />} />
+          <Route path="/custom-hamper" element={<CustomHamper />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/favourites" element={<Favourites />} />
           <Route path="/helpdesk" element={<HelpDesk />} />
+          <Route path="/offers" element={<Offers />} />
+
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/payment" element={<Payment />} />
@@ -63,15 +68,9 @@ const AppContent = () => {
 };
 
 const App = () => (
-  <Router>
-    <ErrorBoundary>
-      <FavouritesProvider>
-        <CartProvider>
-          <AppContent />
-        </CartProvider>
-      </FavouritesProvider>
-    </ErrorBoundary>
-  </Router>
+  <ErrorBoundary>
+    <AppContent />
+  </ErrorBoundary>
 );
 
 export default App;

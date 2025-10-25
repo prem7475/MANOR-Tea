@@ -6,11 +6,11 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [toast, setToast] = useState(null);
   const [cartAnimation, setCartAnimation] = useState(false);
-  const [appliedOffer, setAppliedOfferInternal] = useState(() => {
+  const [appliedOffers, setAppliedOffers] = useState(() => {
     try {
-      return JSON.parse(localStorage.getItem('appliedOffer') || 'null');
+      return JSON.parse(localStorage.getItem('appliedOffers') || '[]');
     } catch {
-      return null;
+      return [];
     }
   });
 
@@ -23,35 +23,42 @@ export const CartProvider = ({ children }) => {
     const gst = subtotal * 0.05;
     const delivery = subtotal >= 500 ? 0 : 50;
     const totalBefore = subtotal + gst + delivery;
-    const offerDiscount = appliedOffer ? appliedOffer.discount : 0;
+    const offerDiscount = appliedOffers.reduce((total, offer) => {
+      if (offer.type === 'percent') {
+        return total + (subtotal * offer.value);
+      } else if (offer.type === 'flat') {
+        return total + offer.value;
+      }
+      return total;
+    }, 0);
     return totalBefore - offerDiscount;
   };
 
-  const setAppliedOffer = (offer) => {
+  const applyOffer = (offer) => {
     const subtotal = getSubtotal();
     if (subtotal < offer.minOrder) {
-      alert(`Offer requires minimum order of ₹${offer.minOrder}`);
+      setToast(`Offer requires minimum order of ₹${offer.minOrder}`);
       return;
     }
-    const usedOffers = JSON.parse(localStorage.getItem('usedOffers') || '[]');
-    if (usedOffers.includes(offer.code)) {
-      alert('Offer already used');
+    const isAlreadyApplied = appliedOffers.some(applied => applied.code === offer.code);
+    if (isAlreadyApplied) {
+      setToast('Offer already applied');
       return;
     }
-    const discount = offer.type === 'percent' ? getSubtotal() * offer.value : offer.value;
-    const newOffer = { ...offer, discount };
-    setAppliedOfferInternal(newOffer);
-    localStorage.setItem('appliedOffer', JSON.stringify(newOffer));
-    localStorage.setItem('usedOffers', JSON.stringify([...usedOffers, offer.code]));
+    const offerWithDiscount = {
+      ...offer,
+      discount: offer.type === 'percent' ? subtotal * offer.value : offer.value
+    };
+    setAppliedOffers(prev => [...prev, offerWithDiscount]);
+    localStorage.setItem('appliedOffers', JSON.stringify([...appliedOffers, offerWithDiscount]));
     setToast(`${offer.title} applied!`);
   };
 
-  const clearAppliedOffer = () => {
-    setAppliedOfferInternal(null);
-    localStorage.removeItem('appliedOffer');
-    const usedOffers = JSON.parse(localStorage.getItem('usedOffers') || '[]');
-    const filtered = usedOffers.filter(code => code !== appliedOffer?.code);
-    localStorage.setItem('usedOffers', JSON.stringify(filtered));
+  const removeOffer = (offerId) => {
+    setAppliedOffers(prev => prev.filter(offer => offer.id !== offerId));
+    const updatedOffers = appliedOffers.filter(offer => offer.id !== offerId);
+    localStorage.setItem('appliedOffers', JSON.stringify(updatedOffers));
+    setToast('Offer removed');
   };
 
   const addToCart = product => {
@@ -86,11 +93,12 @@ export const CartProvider = ({ children }) => {
 
   const clearCart = () => {
     setCart([]);
-    clearAppliedOffer();
+    setAppliedOffers([]);
+    localStorage.removeItem('appliedOffers');
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, updateQuantity, removeFromCart, clearCart, toast, setToast, appliedOffer, setAppliedOffer, clearAppliedOffer, getSubtotal, getTotal, isCartOpen, setIsCartOpen }}>
+    <CartContext.Provider value={{ cart, addToCart, updateQuantity, removeFromCart, clearCart, toast, setToast, appliedOffers, applyOffer, removeOffer, getSubtotal, getTotal, isCartOpen, setIsCartOpen }}>
       {children}
     </CartContext.Provider>
   );

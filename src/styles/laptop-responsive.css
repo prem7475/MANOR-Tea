@@ -3,75 +3,75 @@
 @media (min-width: 768px) {
   /* Checkout page */
   .checkout-container {
-    padding: 2rem;
+    padding: 1.5rem;
   }
   .checkout-title {
-    font-size: 1.875rem;
+    font-size: 1.5rem;
   }
   .checkout-progress {
-    width: 2rem;
-    height: 2rem;
+    width: 1.5rem;
+    height: 1.5rem;
   }
   .checkout-input {
-    padding: 0.5rem;
+    padding: 0.4rem;
   }
   .checkout-button {
-    padding: 0.5rem;
-    font-size: 1rem;
+    padding: 0.4rem;
+    font-size: 0.9rem;
   }
 
   /* Payment page */
   .payment-container {
-    margin: 1.5rem auto;
-    padding: 1.5rem;
+    margin: 1rem auto;
+    padding: 1rem;
   }
   .payment-title {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
   .payment-input {
-    padding: 0.5rem;
-    font-size: 1rem;
+    padding: 0.4rem;
+    font-size: 0.9rem;
   }
   .payment-button {
-    padding: 0.75rem;
-    font-size: 1.2rem;
+    padding: 0.6rem;
+    font-size: 1rem;
   }
 
   /* Cart page */
   .cart-list {
-    gap: 1.5rem;
+    gap: 1rem;
   }
   .cart-item {
-    padding: 1.5rem;
+    padding: 1rem;
   }
   .cart-image {
-    width: 5rem;
-    height: 5rem;
+    width: 4rem;
+    height: 4rem;
   }
   .cart-name {
-    font-size: 1.25rem;
+    font-size: 1rem;
   }
   .cart-price {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
   .cart-controls {
-    margin-top: 1rem;
+    margin-top: 0.75rem;
   }
   .cart-button {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.875rem;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
   }
   .cart-quantity {
-    padding: 0.75rem;
-    font-size: 1rem;
+    padding: 0.6rem;
+    font-size: 0.9rem;
   }
   .cart-remove {
-    padding: 1rem 1.5rem;
-    font-size: 1rem;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
   }
 
   /* CartSidebar */
   .sidebar-container {
-    padding: 1rem;
+    padding: 0.75rem;
   }
 }

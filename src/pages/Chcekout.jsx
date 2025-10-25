@@ -42,7 +42,7 @@ const Checkout = () => {
           placeholder="Phone Number"
           value={form.phone}
           onChange={handleChange}
-          className="checkout-input border border-[#c68e53] rounded"
+          className="checkout-input border border-manorAccent rounded focus:border-manorGold focus:ring-2 focus:ring-manorGold/20 transition-colors"
           required
         />
         <input
@@ -51,7 +51,7 @@ const Checkout = () => {
           placeholder="Email Address"
           value={form.email}
           onChange={handleChange}
-          className="checkout-input border border-[#c68e53] rounded"
+          className="checkout-input border border-manorAccent rounded focus:border-manorGold focus:ring-2 focus:ring-manorGold/20 transition-colors"
           required
         />
         <textarea
@@ -60,12 +60,12 @@ const Checkout = () => {
           value={form.address}
           onChange={handleChange}
           rows="4"
-          className="checkout-input border border-[#c68e53] rounded"
+          className="checkout-input border border-manorAccent rounded focus:border-manorGold focus:ring-2 focus:ring-manorGold/20 transition-colors"
           required
         />
         <button
           type="submit"
-          className="checkout-button bg-[#c68e53] text-white rounded hover:bg-[#82512f]"
+          className="checkout-button bg-manorGold text-white rounded hover:bg-manorGold/80 transition-colors"
         >
           Place Order
         </button>

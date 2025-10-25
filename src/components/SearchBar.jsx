@@ -1,6 +1,10 @@
 import React from 'react';
 
-const SearchBar = ({ placeholder = "Search products..." }) => {
+const SearchBar = ({ placeholder = "Search products...", value = '', onChange = () => {} }) => {
+  const handleInputChange = (e) => {
+    onChange(e.target.value);
+  };
+
   return (
     <div className="search-container">
       <style jsx>{`
@@ -98,7 +102,7 @@ const SearchBar = ({ placeholder = "Search products..." }) => {
             max-width: 100%;
             margin: 0 10px;
           }
-          
+
           .search-input {
             height: 45px;
             font-size: 14px;
@@ -106,7 +110,7 @@ const SearchBar = ({ placeholder = "Search products..." }) => {
           }
         }
       `}</style>
-      
+
       <div className="search-container">
         <div className="galaxy"></div>
         <div className="search-wrapper">
@@ -114,6 +118,8 @@ const SearchBar = ({ placeholder = "Search products..." }) => {
             type="text"
             className="search-input"
             placeholder={placeholder}
+            value={value}
+            onChange={handleInputChange}
           />
           <div className="search-icon">
             <svg
@@ -130,7 +136,7 @@ const SearchBar = ({ placeholder = "Search products..." }) => {
               <line y2="16.65" x2="16.65" y1="21" x1="21"></line>
             </svg>
           </div>
-          <button className="search-button">
+          <button className="search-button" type="button">
             <svg
               strokeLinejoin="round"
               strokeLinecap="round"

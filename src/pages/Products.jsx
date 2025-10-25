@@ -5,7 +5,7 @@ import FilterBar from "../components/FilterBar.jsx";
 
 import teaData from '../data/teaData.js';
 
-const PRODUCTS = teaData;
+const PRODUCTS = teaData.filter(p => !p.id.startsWith('g')); // Only tea products, not gift hampers
 
 const Products = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -15,6 +15,7 @@ const Products = () => {
     p.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Apply sorting filters
   if (filter === 'weight') {
     filteredProducts = filteredProducts.sort((a, b) => a.weight - b.weight);
   } else if (filter === 'priceLowHigh') {
@@ -26,7 +27,7 @@ const Products = () => {
   return (
     <section className="p-2 sm:p-4 bg-manorBg min-h-screen font-serif text-manorText animate-fade-in">
       <h1 className="header-title text-lg sm:text-2xl animate-bounce-in">LEAF TEA</h1>
-      <SearchBar searchTerm={searchTerm} onSearch={setSearchTerm} />
+      <SearchBar placeholder="Search products..." value={searchTerm} onChange={setSearchTerm} />
       <FilterBar filter={filter} onFilterChange={setFilter} />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 mt-4 justify-center">
         {filteredProducts.map(product => (

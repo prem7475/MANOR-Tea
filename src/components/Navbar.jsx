@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useCart } from '../hooks/useCart.jsx';
 import { useFavourites } from '../context/FavouritesContext.jsx';
+import { Heart, ShoppingCart, Menu, User } from 'lucide-react';
 
 const Navbar = ({ openCart }) => {
   const location = useLocation();
@@ -19,21 +20,21 @@ const Navbar = ({ openCart }) => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <nav className="bg-white text-black px-4 md:px-8 py-4 shadow-lg flex items-center justify-between font-serif font-bold relative sticky top-0 z-50">
+    <nav className="bg-white text-black px-4 md:px-8 py-2 shadow-lg flex items-center justify-between font-serif font-bold relative sticky top-0 z-50">
       {/* Company Logo */}
       <Link to="/" className="flex items-center relative group" onClick={closeMobileMenu}>
         <img
           src="/ManorLogo.png"
           alt="ManorLogo"
-          className="h-12 md:h-16 w-auto"
+          className="h-8 md:h-12 w-auto"
         />
-        <span className="absolute left-0 top-1/2 transform -translate-y-1/2 text-2xl md:text-3xl font-bold text-black opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:left-full">
+        <span className="absolute left-0 top-1/2 transform -translate-y-1/2 text-xl md:text-2xl font-bold text-black opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:left-full">
           MANOR
         </span>
       </Link>
 
       {/* Desktop Navigation Links */}
-      <div className="hidden md:flex items-center gap-6 relative text-xl">
+      <div className="hidden md:flex items-center gap-4 relative text-lg">
         <Link
           to="/"
           className={`hover:text-yellow-400 transition-colors duration-300 ${isActive('/') ? 'text-yellow-400' : ''}`}
@@ -69,20 +70,28 @@ const Navbar = ({ openCart }) => {
         >
           Leadership
         </Link>
+        <Link
+          to="/offers"
+          className={`hover:text-yellow-400 transition-colors duration-300 ${isActive('/offers') ? 'text-yellow-400' : ''}`}
+          onClick={closeMobileMenu}
+        >
+          Offers
+        </Link>
 
-        {/* Favourites with Text */}
+        {/* Favourites with Icon */}
         <Link
           to="/favourites"
-          className={`relative hover:text-yellow-400 transition-colors duration-300 flex items-center gap-1 ${isActive('/favourites') ? 'text-yellow-400' : ''}`}
+          className={`relative hover:text-manorGold transition-colors duration-300 flex items-center gap-2 ${isActive('/favourites') ? 'text-manorGold' : ''}`}
           aria-label="Favourites"
           onClick={closeMobileMenu}
         >
-          Your Fav
+          <Heart className="w-5 h-5" />
+          <span className="hidden lg:inline">Favourites</span>
         </Link>
 
-        {/* Cart with Text */}
+        {/* Cart with Icon */}
         <div
-          className={`relative hover:text-yellow-400 transition-colors duration-300 flex items-center gap-1 cursor-pointer ${location.pathname === '/cart' ? 'text-yellow-400' : ''}`}
+          className={`relative hover:text-manorGold transition-colors duration-300 flex items-center gap-2 cursor-pointer ${location.pathname === '/cart' ? 'text-manorGold' : ''}`}
           aria-label="Cart"
           onClick={(e) => {
             e.preventDefault();
@@ -92,9 +101,10 @@ const Navbar = ({ openCart }) => {
           onMouseEnter={() => setShowCartSummary(true)}
           onMouseLeave={() => setShowCartSummary(false)}
         >
-          Your CART
+          <ShoppingCart className="w-5 h-5" />
+          <span className="hidden lg:inline">Cart</span>
           {cart.length > 0 && (
-            <span className="bg-accentGreen text-white rounded-full text-xs w-5 h-5 flex items-center justify-center font-bold animate-bounce-in">
+            <span className="bg-manorGreen text-white rounded-full text-xs w-5 h-5 flex items-center justify-center font-bold animate-bounce-in">
               {cart.length}
             </span>
           )}
@@ -119,13 +129,13 @@ const Navbar = ({ openCart }) => {
       {/* Mobile Cart and Menu */}
       <div className="md:hidden flex items-center gap-4 text-xl">
         <div
-          className="relative hover:text-yellow-400 transition-colors duration-300 flex items-center gap-1 cursor-pointer"
+          className="relative hover:text-manorGold transition-colors duration-300 flex items-center gap-2 cursor-pointer"
           aria-label="Cart"
           onClick={openCart}
         >
-          CART
+          <ShoppingCart className="w-6 h-6" />
           {cart.length > 0 && (
-            <span className="bg-accentGreen text-white rounded-full text-xs w-5 h-5 flex items-center justify-center font-bold animate-bounce-in">
+            <span className="bg-manorGreen text-white rounded-full text-xs w-5 h-5 flex items-center justify-center font-bold animate-bounce-in">
               {cart.length}
             </span>
           )}
@@ -143,7 +153,7 @@ const Navbar = ({ openCart }) => {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg z-50 flex flex-col items-center py-4 space-y-4">
+        <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg z-50 flex flex-col items-center py-3 space-y-3">
           <Link
             to="/"
             className={`hover:text-yellow-400 transition-colors duration-300 ${isActive('/') ? 'text-yellow-400' : ''}`}
@@ -180,12 +190,20 @@ const Navbar = ({ openCart }) => {
             Leadership
           </Link>
           <Link
+            to="/offers"
+            className={`hover:text-yellow-400 transition-colors duration-300 ${isActive('/offers') ? 'text-yellow-400' : ''}`}
+            onClick={closeMobileMenu}
+          >
+            Offers
+          </Link>
+          <Link
             to="/favourites"
-            className={`relative hover:text-yellow-400 transition-colors duration-300 flex items-center gap-1 ${isActive('/favourites') ? 'text-yellow-400' : ''}`}
+            className={`relative hover:text-manorGold transition-colors duration-300 flex items-center gap-2 ${isActive('/favourites') ? 'text-manorGold' : ''}`}
             aria-label="Favourites"
             onClick={closeMobileMenu}
           >
-            Your Fav
+            <Heart className="w-5 h-5" />
+            Favourites
           </Link>
         </div>
       )}

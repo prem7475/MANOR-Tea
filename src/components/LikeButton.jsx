@@ -1,8 +1,10 @@
 import React from 'react';
 import { useFavourites } from '../context/FavouritesContext.jsx';
+import { useRecommendations } from '../context/RecommendationContext.jsx';
 
 const LikeButton = ({ product }) => {
   const { addToFavourites, removeFromFavourites, isFavourite } = useFavourites();
+  const { trackInteraction } = useRecommendations();
   const favourite = isFavourite(product.id);
 
   const handleToggleFavourite = () => {
@@ -10,6 +12,7 @@ const LikeButton = ({ product }) => {
       removeFromFavourites(product.id);
     } else {
       addToFavourites(product);
+      trackInteraction(product.id, 'like');
     }
   };
 

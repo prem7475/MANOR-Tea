@@ -133,7 +133,7 @@ const Payment = () => {
             value={form.phone}
             onChange={handleChange}
             required
-            className="payment-input"
+            className="payment-input border border-manorAccent rounded focus:border-manorGold focus:ring-2 focus:ring-manorGold/20 transition-colors"
           />
           <input
             type="email"
@@ -142,7 +142,7 @@ const Payment = () => {
             value={form.email}
             onChange={handleChange}
             required
-            className="payment-input"
+            className="payment-input border border-manorAccent rounded focus:border-manorGold focus:ring-2 focus:ring-manorGold/20 transition-colors"
           />
           <textarea
             name="address"
@@ -150,9 +150,9 @@ const Payment = () => {
             value={form.address}
             onChange={handleChange}
             required
-            className="payment-textarea"
+            className="payment-textarea border border-manorAccent rounded focus:border-manorGold focus:ring-2 focus:ring-manorGold/20 transition-colors"
           />
-          <button type="submit" className="payment-button">
+          <button type="submit" className="payment-button bg-manorGold text-white hover:bg-manorGold/80 transition-colors">
             Pay Now
           </button>
         </form>

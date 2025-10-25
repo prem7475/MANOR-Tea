@@ -5,3 +5,9 @@
 html {
   scroll-behavior: smooth;
 }
+
+@media (max-width: 639px) {
+  html {
+    font-size: 12px; /* Smaller base font size for phones */
+  }
+}

@@ -10,6 +10,11 @@ const teaData = [
     isSoldOut: false,
     image: "/Manor (1).jpg",
     weight: 100,
+    rating: 4.8,
+    reviews: 124,
+    mood: ["Calming & Relaxing", "Focus"],
+    benefit: ["Immunity"],
+    tastingNotes: ["Spicy", "Floral"]
   },
   {
     id: "2",
@@ -22,6 +27,11 @@ const teaData = [
     isSoldOut: false,
     image: "/Manor (2).jpg",
     weight: 150,
+    rating: 4.6,
+    reviews: 89,
+    mood: ["Energizing"],
+    benefit: ["Digestion"],
+    tastingNotes: ["Earthy", "Robust"]
   },
   {
     id: "3",
@@ -34,6 +44,8 @@ const teaData = [
     isSoldOut: true,
     image: "/Manor (3).jpg",
     weight: 200,
+    rating: 4.7,
+    reviews: 67
   },
   {
     id: "4",
@@ -46,6 +58,8 @@ const teaData = [
     isSoldOut: false,
     image: "/Manor (4).jpg",
     weight: 120,
+    rating: 4.5,
+    reviews: 156
   },
   {
     id: "5",
@@ -58,6 +72,8 @@ const teaData = [
     isSoldOut: true,
     image: "/Manor (5).jpg",
     weight: 180,
+    rating: 4.4,
+    reviews: 78
   },
   {
     id: "6",
@@ -70,6 +86,8 @@ const teaData = [
     isSoldOut: false,
     image: "/Manor (6).jpg",
     weight: 100,
+    rating: 4.3,
+    reviews: 92
   },
   {
     id: "7",
@@ -82,6 +100,8 @@ const teaData = [
     isSoldOut: true,
     image: "/Manor (7).jpg",
     weight: 100,
+    rating: 4.6,
+    reviews: 134
   },
   {
     id: "8",
@@ -94,6 +114,8 @@ const teaData = [
     isSoldOut: false,
     image: "/Manor (1).jpg",
     weight: 100,
+    rating: 4.7,
+    reviews: 98
   },
   // Gift Hampers
   {
@@ -107,6 +129,8 @@ const teaData = [
     isSoldOut: false,
     image: "/gift hamper 1.jpg",
     weight: 500,
+    rating: 4.8,
+    reviews: 76
   },
   {
     id: "g2",
@@ -119,6 +143,8 @@ const teaData = [
     isSoldOut: false,
     image: "/gift hamper 2.jpg",
     weight: 600,
+    rating: 4.9,
+    reviews: 43
   },
   {
     id: "g3",
@@ -131,6 +157,8 @@ const teaData = [
     isSoldOut: false,
     image: "/gift hamper 3.jpg",
     weight: 550,
+    rating: 4.7,
+    reviews: 58
   },
   {
     id: "g4",
@@ -143,6 +171,8 @@ const teaData = [
     isSoldOut: false,
     image: "/gift hamper 4.jpg",
     weight: 500,
+    rating: 4.6,
+    reviews: 89
   },
   {
     id: "g5",
@@ -155,6 +185,8 @@ const teaData = [
     isSoldOut: false,
     image: "/gift hamper 5.jpg",
     weight: 600,
+    rating: 4.8,
+    reviews: 67
   },
   {
     id: "g6",
@@ -167,6 +199,8 @@ const teaData = [
     isSoldOut: false,
     image: "/gift hamper 6.jpg",
     weight: 650,
+    rating: 4.9,
+    reviews: 52
   },
 ];
 

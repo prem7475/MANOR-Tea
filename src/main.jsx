@@ -7,13 +7,28 @@ import './styles/laptop-responsive.css';
 import App from './App.jsx';
 import { ThemeProvider } from './hooks/useTheme.jsx';
 import { CartProvider } from './hooks/useCart.jsx';
+import { BrowserRouter } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext.jsx';
+import { FavouritesProvider } from './context/FavouritesContext.jsx';
+import { LoyaltyProvider } from './context/LoyaltyContext.jsx';
+import { RecommendationProvider } from './context/RecommendationContext.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <ThemeProvider>
-      <CartProvider>
-        <App />
-      </CartProvider>
-    </ThemeProvider>
+    <BrowserRouter>
+      <AuthProvider>
+        <FavouritesProvider>
+          <LoyaltyProvider>
+            <RecommendationProvider>
+              <ThemeProvider>
+                <CartProvider>
+                  <App />
+                </CartProvider>
+              </ThemeProvider>
+            </RecommendationProvider>
+          </LoyaltyProvider>
+        </FavouritesProvider>
+      </AuthProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );
