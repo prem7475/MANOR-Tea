@@ -199,7 +199,7 @@ const Cart = () => {
 
             {/* All Available Offers */}
             <div className="space-y-3 mb-6">
-              {offers.map(offer => {
+              {offers.slice(0, 3).map(offer => {
                 const eligible = isEligible(offer);
                 const isApplied = appliedOffers.some(applied => applied.code === offer.code);
                 return (
@@ -224,6 +224,16 @@ const Cart = () => {
                   </div>
                 );
               })}
+            </div>
+
+            {/* Show All Offers Button */}
+            <div className="text-center mb-6">
+              <button
+                onClick={() => setShowOffers(true)}
+                className="bg-[#c68e53] text-white px-6 py-2 rounded-lg hover:bg-[#82512f] transition-colors font-semibold"
+              >
+                Show All Offers
+              </button>
             </div>
 
             {/* Order Summary */}
