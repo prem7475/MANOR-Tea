@@ -208,7 +208,7 @@ const Cart = () => {
                       <h4 className="font-bold text-[#82512f] text-sm">{offer.title}</h4>
                       <button
                         onClick={() => handleApplyOffer(offer)}
-                        disabled={isApplied || !eligible}
+                        disabled={appliedOffers.length > 0 || !eligible}
                         className="bg-[#c68e53] text-white px-3 py-1 rounded text-xs hover:bg-[#82512f] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-400"
                       >
                         {isApplied ? 'Applied' : eligible ? 'Apply' : `Min ₹${offer.minOrder}`}
@@ -360,7 +360,7 @@ const Cart = () => {
                                     <h4 className="font-bold text-[#82512f] text-sm">{offer.title}</h4>
                                     <button
                                       onClick={() => handleApplyOffer(offer)}
-                                      disabled={isApplied || !eligible}
+                                      disabled={appliedOffers.length > 0 || !eligible}
                                       className="bg-[#c68e53] text-white px-3 py-1 rounded text-xs hover:bg-[#82512f] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-400"
                                     >
                                       {isApplied ? 'Applied' : eligible ? 'Apply' : `Min ₹${offer.minOrder}`}

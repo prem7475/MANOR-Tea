@@ -11,6 +11,7 @@ const ProductDetail = () => {
   const { addToCart } = useCart();
   const { trackInteraction, getRecommendations } = useRecommendations();
   const [showStickyBar, setShowStickyBar] = useState(false);
+  const [selectedIngredient, setSelectedIngredient] = useState(null);
 
   const product = teaData.find(p => p.id === id);
 
@@ -61,20 +62,48 @@ const ProductDetail = () => {
     frequentlyBought.forEach(item => addToCart(item));
   };
 
+  const handleIngredientClick = (ingredient) => {
+    setSelectedIngredient(ingredient);
+  };
+
+  const closeModal = () => {
+    setSelectedIngredient(null);
+  };
+
   return (
     <div className="p-4 bg-manorBg min-h-screen font-serif text-manorText">
       <div className="max-w-4xl mx-auto">
         {/* Main Content: Horizontal Layout */}
         <div className="flex flex-col md:flex-row bg-manorBg border border-manorAccent/20 rounded-lg shadow-md p-4 mb-6">
           {/* Product Image on Left */}
-          <div className="flex-shrink-0 w-full md:w-1/2 mb-4 md:mb-0">
-            <div className="image-container overflow-hidden rounded-md">
+          <div className="flex-shrink-0 w-full md:w-1/2 mb-4 md:mb-0 relative">
+            <div className="image-container overflow-hidden rounded-md relative">
               <img
                 src={product.image}
                 alt={product.name}
                 className="w-full h-64 md:h-80 object-cover"
               />
+              {/* Interactive Hotspots */}
+              {product.ingredients && product.ingredients.map((ingredient, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleIngredientClick(ingredient)}
+                  className="absolute w-6 h-6 bg-manorGold rounded-full flex items-center justify-center text-white font-bold text-xs animate-pulse hover:animate-none hover:scale-110 transition-transform"
+                  style={{
+                    top: ingredient.position.top,
+                    left: ingredient.position.left,
+                    transform: 'translate(-50%, -50%)'
+                  }}
+                >
+                  +
+                </button>
+              ))}
             </div>
+            {product.ingredients && (
+              <p className="text-xs text-manorText/60 mt-2 text-center">
+                Click the "+" icons to explore ingredients
+              </p>
+            )}
           </div>
 
           {/* Product Details on Right */}
@@ -249,6 +278,22 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
+
+      {/* Ingredient Modal */}
+      {selectedIngredient && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full">
+            <h3 className="text-xl font-bold mb-4 text-manorAccent">{selectedIngredient.name}</h3>
+            <p className="text-manorText/80 mb-6">{selectedIngredient.description}</p>
+            <button
+              onClick={closeModal}
+              className="bg-manorAccent text-white px-4 py-2 rounded hover:bg-manorDark transition-colors"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Sticky Add to Cart Bar for Mobile */}
       {showStickyBar && (

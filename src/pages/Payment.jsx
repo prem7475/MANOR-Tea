@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useCart } from '../hooks/useCart.jsx';
 
 const Payment = () => {
   const { cart, getTotal, clearCart } = useCart();
+  const location = useLocation();
+  const checkoutData = location.state?.checkoutData || {};
   const [form, setForm] = useState({
-    phone: '',
-    email: '',
-    address: '',
+    phone: checkoutData.phone || '',
+    email: checkoutData.email || '',
+    address: checkoutData.address || '',
   });
 
   const [paymentSuccess, setPaymentSuccess] = useState(false);

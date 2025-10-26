@@ -44,7 +44,7 @@ const ProductCard = ({ id, name, description, price, originalPrice, discountPerc
         )}
         <div className="flex flex-row md:flex-col items-center md:items-start flex-grow min-w-0 relative">
           <Link to={`/product/${id}`} className="flex flex-row md:flex-col items-center md:items-start flex-grow min-w-0" onClick={() => trackInteraction(id, 'click')}>
-            <div className="image-container overflow-hidden rounded-md mb-0 md:mb-4 w-20 h-20 md:w-full md:h-48 flex-shrink-0 relative" onClick={openModal}>
+            <div className="image-container overflow-hidden rounded-md mb-0 md:mb-4 w-24 h-24 md:w-full md:h-48 flex-shrink-0 relative" onClick={openModal}>
               <picture>
                 <source srcSet={image.replace(/\.(jpg|jpeg|png)$/i, '.webp')} type="image/webp" />
                 <img

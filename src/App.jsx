@@ -16,10 +16,11 @@ import ProductDetail from './pages/ProductDetail.jsx';
 import Favourites from './pages/Favourites.jsx';
 import HelpDesk from './pages/HelpDesk.jsx';
 import Offers from './pages/Offers.jsx';
+import TeaSommelier from './pages/TeaSommelier.jsx';
+import ThankYou from './pages/ThankYou.jsx';
 
 import Cart from './pages/Cart.jsx';
 import Checkout from './pages/Chcekout.jsx';
-import Payment from './pages/Payment.jsx';
 import Toast from './components/Toast.jsx';
 import CartSidebar from './components/CartSidebar.jsx';
 import { useCart } from './hooks/useCart.jsx';
@@ -54,10 +55,11 @@ const AppContent = () => {
           <Route path="/favourites" element={<Favourites />} />
           <Route path="/helpdesk" element={<HelpDesk />} />
           <Route path="/offers" element={<Offers />} />
+          <Route path="/quiz" element={<TeaSommelier />} />
+          <Route path="/thank-you" element={<ThankYou />} />
 
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<Checkout />} />
-          <Route path="/payment" element={<Payment />} />
         </Routes>
       </main>
       <Footer />

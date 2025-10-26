@@ -34,7 +34,7 @@ export const CartProvider = ({ children }) => {
     return totalBefore - offerDiscount;
   };
 
-  const applyOffer = (offer) => {
+  const applyOffer = async (offer) => {
     const subtotal = getSubtotal();
     if (subtotal < offer.minOrder) {
       setToast(`Offer requires minimum order of ₹${offer.minOrder}`);
@@ -45,13 +45,38 @@ export const CartProvider = ({ children }) => {
       setToast('Offer already applied');
       return;
     }
-    const offerWithDiscount = {
-      ...offer,
-      discount: offer.type === 'percent' ? subtotal * offer.value : offer.value
-    };
-    setAppliedOffers(prev => [...prev, offerWithDiscount]);
-    localStorage.setItem('appliedOffers', JSON.stringify([...appliedOffers, offerWithDiscount]));
-    setToast(`${offer.title} applied!`);
+
+    // Simulate API call to backend
+    try {
+      setToast('Applying offer...');
+      const response = await fetch('/api/apply-offer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: offer.code, subtotal })
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        const offerWithDiscount = {
+          ...offer,
+          discount: data.discountAmount
+        };
+        setAppliedOffers(prev => [...prev, offerWithDiscount]);
+        localStorage.setItem('appliedOffers', JSON.stringify([...appliedOffers, offerWithDiscount]));
+        setToast(`${offer.title} applied!`);
+      } else {
+        setToast(data.message || 'Failed to apply offer');
+      }
+    } catch (error) {
+      // Fallback to local calculation if API fails
+      const offerWithDiscount = {
+        ...offer,
+        discount: offer.type === 'percent' ? subtotal * offer.value : offer.value
+      };
+      setAppliedOffers(prev => [...prev, offerWithDiscount]);
+      localStorage.setItem('appliedOffers', JSON.stringify([...appliedOffers, offerWithDiscount]));
+      setToast(`${offer.title} applied!`);
+    }
   };
 
   const removeOffer = (offerId) => {

@@ -46,3 +46,50 @@
 .read-the-docs {
   color: #888;
 }
+
+.legal-text {
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: #777;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* Cart Badge Styles */
+.cart-icon-container {
+  position: relative;
+  display: inline-block;
+}
+
+.cart-badge {
+  /* Positioning the badge */
+  position: absolute;
+  top: -8px;
+  right: -8px;
+
+  /* The look */
+  background-color: #C8A870; /* Matte Gold */
+  color: white;
+  border-radius: 50%; /* Makes it a perfect circle */
+
+  /* Sizing and alignment */
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Font */
+  font-size: 12px;
+  font-weight: 600;
+
+  /* Hide/Show Animation */
+  transform: scale(0); /* Start hidden */
+  transition: transform 0.2s ease-in-out;
+}
+
+/* This class will be added by JavaScript to show the badge */
+.cart-badge.show {
+  transform: scale(1); /* Show the badge */
+}

@@ -34,9 +34,9 @@ const Footer = () => {
               alt="FSSAI Logo"
               className="h-6 w-auto"
             />
-            <span>FSSAI: 11523078000114</span>
+            <span className="legal-text font-normal">FSSAI: 11523078000114</span>
           </div>
-          <span>GST No: 27ADRPN3696H1ZT</span>
+          <span className="legal-text font-normal">GST No: 27ADRPN3696H1ZT</span>
           <p className="text-sm text-gray-300">© MANOR Tea 2025 | All Rights Reserved</p>
         </div>
 

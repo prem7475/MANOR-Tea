@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../hooks/useCart.jsx';
 
 const CartSidebar = ({ isOpen, onClose }) => {
-  const { cart, updateQuantity, removeFromCart, getSubtotal, getTotal, appliedOffer, setAppliedOffer, clearAppliedOffer } = useCart();
+  const { cart, updateQuantity, removeFromCart, getSubtotal, getTotal, appliedOffers, applyOffer, removeOffer } = useCart();
   const [form, setForm] = useState({ phone: '', email: '', address: '' });
   const [coupon, setCoupon] = useState('');
   const [showOffers, setShowOffers] = useState(false);
@@ -73,8 +73,8 @@ const CartSidebar = ({ isOpen, onClose }) => {
 
   const isEligible = (offer) => subtotal >= offer.minOrder;
 
-  const applyOffer = (offer) => {
-    setAppliedOffer(offer);
+  const handleApplyOffer = async (offer) => {
+    await applyOffer(offer);
     setShowOffers(false);
   };
 
@@ -90,7 +90,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
       return;
     }
     if (subtotal >= offer.minOrder) {
-      setAppliedOffer(offer);
+      applyOffer(offer);
       setCoupon('');
     } else {
       alert(`Minimum order value for ${offer.code} is ₹${offer.minOrder}`);
@@ -183,7 +183,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
                   <div>Subtotal: ₹{subtotal.toFixed(2)}</div>
                   <div>GST (5%): ₹{gst.toFixed(2)}</div>
                   <div>Delivery: {delivery === 0 ? 'Free' : `₹${delivery}`}</div>
-                  {appliedOffer && <div>Discount: -₹{appliedOffer.discount.toFixed(2)}</div>}
+                  {appliedOffers.length > 0 && <div>Discount: -₹{appliedOffers.reduce((total, offer) => total + offer.discount, 0).toFixed(2)}</div>}
                   <div className="font-bold text-lg">Total: ₹{total.toFixed(2)}</div>
                 </div>
               </div>
@@ -202,22 +202,22 @@ const CartSidebar = ({ isOpen, onClose }) => {
                   <button
                     onClick={applyCoupon}
                     className="bg-[#c68e53] text-white px-4 py-3 rounded hover:bg-[#82512f] transition-colors font-semibold text-base min-h-[44px]"
-                    disabled={!!appliedOffer}
+                    disabled={appliedOffers.length > 0}
                   >
                     Apply
                   </button>
                 </div>
-                {appliedOffer && (
-                  <div className="mb-4 p-3 bg-green-100 rounded border border-green-300 text-green-800 text-sm">
-                    Applied: {appliedOffer.title} (-₹{appliedOffer.discount.toFixed(2)})
+                {appliedOffers.map(offer => (
+                  <div key={offer.code} className="mb-4 p-3 bg-green-100 rounded border border-green-300 text-green-800 text-sm">
+                    Applied: {offer.title} (-₹{offer.discount.toFixed(2)})
                     <button
-                      onClick={clearAppliedOffer}
+                      onClick={() => removeOffer(offer.code)}
                       className="ml-2 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-xs"
                     >
                       Remove
                     </button>
                   </div>
-                )}
+                ))}
                 <button
                   onClick={() => setShowOffers(true)}
                   className="text-[#c68e53] underline text-sm hover:text-[#82512f] mb-4 w-full text-left border border-[#c68e53] p-2 rounded bg-[#fff8ea]"
@@ -237,16 +237,17 @@ const CartSidebar = ({ isOpen, onClose }) => {
                     </div>
                     {offers.map(offer => {
                       const eligible = isEligible(offer);
+                      const isApplied = appliedOffers.some(applied => applied.code === offer.code);
                       return (
                         <div key={offer.code} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
                           <div className="flex justify-between items-start mb-2">
                             <h5 className="font-bold text-[#82512f] text-sm">{offer.title}</h5>
                             <button
-                              onClick={() => applyOffer(offer)}
-                              disabled={appliedOffer && appliedOffer.code === offer.code || !eligible}
+                              onClick={() => handleApplyOffer(offer)}
+                              disabled={appliedOffers.length > 0 || !eligible}
                               className="bg-[#c68e53] text-white px-3 py-1 rounded text-xs hover:bg-[#82512f] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-400"
                             >
-                              {appliedOffer && appliedOffer.code === offer.code ? 'Applied' : eligible ? 'Apply' : `Min ₹${offer.minOrder}`}
+                              {isApplied ? 'Applied' : eligible ? 'Apply' : `Min ₹${offer.minOrder}`}
                             </button>
                           </div>
                           <p className="text-sm mb-2 text-gray-700">{offer.desc}</p>
@@ -263,44 +264,17 @@ const CartSidebar = ({ isOpen, onClose }) => {
                 )}
               </div>
 
-              {/* Checkout Form */}
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Checkout</h3>
-                <form onSubmit={handleSubmit} className="space-y-3">
-                  <input
-                    type="tel"
-                    name="phone"
-                    placeholder="Phone Number"
-                    value={form.phone}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 rounded p-3 text-base min-h-[44px]"
-                    required
-                  />
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Email Address"
-                    value={form.email}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 rounded p-3 text-base min-h-[44px]"
-                    required
-                  />
-                  <textarea
-                    name="address"
-                    placeholder="Delivery Address"
-                    value={form.address}
-                    onChange={handleChange}
-                    rows="3"
-                    className="w-full border border-gray-300 rounded p-3 text-base min-h-[44px]"
-                    required
-                  />
-                  <button
-                    type="submit"
-                    className="w-full bg-accentGreen text-white py-3 rounded hover:bg-accentHover transition-colors font-semibold text-lg min-h-[44px]"
-                  >
-                    Place Order
-                  </button>
-                </form>
+              {/* Proceed to Checkout Button */}
+              <div className="mt-6">
+                <button
+                  onClick={() => {
+                    onClose();
+                    navigate('/checkout');
+                  }}
+                  className="w-full bg-manorGold text-white py-3 rounded hover:bg-manorGold/80 transition-colors font-semibold text-lg min-h-[44px]"
+                >
+                  Proceed to Checkout
+                </button>
               </div>
             </>
           )}
