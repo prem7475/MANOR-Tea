@@ -42,6 +42,7 @@ const Leadership = () => {
 
   const handleShowMore = (id) => {
     setExpandedCardId(id === expandedCardId ? null : id);
+    setClickedCardId(id === expandedCardId ? null : id);
   };
 
   const resetBlur = () => {
@@ -52,10 +53,11 @@ const Leadership = () => {
     <div className="p-8 bg-[#fff8ea] text-[#82512f] font-serif min-h-screen">
       <h2 className="text-3xl font-bold mb-8 text-center cursor-pointer hover:text-[#82512f]/80 transition-colors" onClick={resetBlur}>Our Leadership</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center">
-        {owners.map(owner => (
+        {owners.map((owner, index) => (
           <LeadershipCard
             key={owner.id}
             {...owner}
+            index={index}
             isBlurred={clickedCardId !== null && clickedCardId !== owner.id}
             onCardClick={handleCardClick}
             isExpanded={expandedCardId === owner.id}

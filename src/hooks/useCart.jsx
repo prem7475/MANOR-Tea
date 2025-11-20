@@ -40,6 +40,13 @@ export const CartProvider = ({ children }) => {
       setToast(`Offer requires minimum order of ₹${offer.minOrder}`);
       return;
     }
+
+    // Check if user already has an applied offer
+    if (appliedOffers.length > 0) {
+      setToast('Only one offer can be applied per order. Please remove the current offer first.');
+      return;
+    }
+
     const isAlreadyApplied = appliedOffers.some(applied => applied.code === offer.code);
     if (isAlreadyApplied) {
       setToast('Offer already applied');
@@ -52,29 +59,32 @@ export const CartProvider = ({ children }) => {
       const response = await fetch('/api/apply-offer', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code: offer.code, subtotal })
+        body: JSON.stringify({ code: offer.code, subtotal, userId: 'currentUser' })
       });
       const data = await response.json();
 
       if (data.success) {
         const offerWithDiscount = {
           ...offer,
-          discount: data.discountAmount
+          discount: data.discountAmount,
+          userId: 'currentUser'
         };
-        setAppliedOffers(prev => [...prev, offerWithDiscount]);
-        localStorage.setItem('appliedOffers', JSON.stringify([...appliedOffers, offerWithDiscount]));
+        setAppliedOffers([offerWithDiscount]); // Only one offer at a time
+        localStorage.setItem('appliedOffers', JSON.stringify([offerWithDiscount]));
         setToast(`${offer.title} applied!`);
       } else {
         setToast(data.message || 'Failed to apply offer');
       }
     } catch (error) {
       // Fallback to local calculation if API fails
+      const discount = offer.type === 'percent' ? Math.min(subtotal * offer.value, offer.maxDiscount || Infinity) : offer.value;
       const offerWithDiscount = {
         ...offer,
-        discount: offer.type === 'percent' ? subtotal * offer.value : offer.value
+        discount,
+        userId: 'currentUser'
       };
-      setAppliedOffers(prev => [...prev, offerWithDiscount]);
-      localStorage.setItem('appliedOffers', JSON.stringify([...appliedOffers, offerWithDiscount]));
+      setAppliedOffers([offerWithDiscount]); // Only one offer at a time
+      localStorage.setItem('appliedOffers', JSON.stringify([offerWithDiscount]));
       setToast(`${offer.title} applied!`);
     }
   };

@@ -1,113 +1,17 @@
 import React, { useState } from 'react';
 import { useCart } from '../hooks/useCart';
+import offersData from '../data/offersData';
 
 const Offers = () => {
   const { cart, applyOffer, removeOffer, appliedOffers } = useCart();
   const [showAllOffers, setShowAllOffers] = useState(false);
 
-  const offers = [
-    {
-      id: 'TIER10',
-      title: 'MANOR TIER 1',
-      detail: 'Get 10% off on orders above ₹500',
-      terms: 'Min. order ₹500. Valid on all products.',
-      logo: '/images/manor-logo.png',
-      minAmount: 500,
-      discount: 0.1,
-      type: 'cart-value'
-    },
-    {
-      id: 'TIER20',
-      title: 'MANOR TIER 2',
-      detail: 'Get 20% off on orders above ₹1,000',
-      terms: 'Min. order ₹1,000. Valid on all products.',
-      logo: '/images/manor-logo.png',
-      minAmount: 1000,
-      discount: 0.2,
-      type: 'cart-value'
-    },
-    {
-      id: 'FREEGIFT',
-      title: 'FREE GIFT',
-      detail: 'Get a free "Manor Tea Sampler" on orders above ₹750',
-      terms: 'Min. order ₹750. Free gift added to cart.',
-      logo: '/images/gift-icon.png',
-      minAmount: 750,
-      discount: 0,
-      type: 'free-gift'
-    },
-    {
-      id: 'HDFC15',
-      title: 'HDFC BANK OFFER',
-      detail: 'Get 15% instant discount on HDFC Bank Credit & Debit Cards',
-      terms: 'Min. order ₹1,500. Valid on HDFC cards only.',
-      logo: '/images/hdfc-logo.png',
-      minAmount: 1500,
-      discount: 0.15,
-      type: 'bank'
-    },
-    {
-      id: 'ICICI50',
-      title: 'ICICI BANK OFFER',
-      detail: 'Flat ₹50 off on ICICI Bank Credit Cards',
-      terms: 'Min. order ₹999. Valid on ICICI cards only.',
-      logo: '/images/icici-logo.png',
-      minAmount: 999,
-      discount: 50,
-      type: 'bank'
-    },
-    {
-      id: 'VISA20',
-      title: 'VISA SIGNATURE',
-      detail: '20% off up to ₹100 on all Visa Signature cards',
-      terms: 'Min. order ₹500. Max discount ₹100.',
-      logo: '/images/visa-logo.png',
-      minAmount: 500,
-      discount: 0.2,
-      maxDiscount: 100,
-      type: 'card'
-    },
-    {
-      id: 'PAYTM100',
-      title: 'PAYTM WALLET',
-      detail: 'Get ₹100 cashback in your Paytm Wallet',
-      terms: 'Min. order ₹800. Valid on Paytm UPI only.',
-      logo: '/images/paytm-logo.png',
-      minAmount: 800,
-      discount: 100,
-      type: 'wallet'
-    },
-    {
-      id: 'AMZPAY50',
-      title: 'AMAZON PAY',
-      detail: 'Flat ₹50 cashback via Amazon Pay UPI',
-      terms: 'First order only. Min. order ₹500.',
-      logo: '/images/amazon-pay-logo.png',
-      minAmount: 500,
-      discount: 50,
-      type: 'wallet'
-    },
-    {
-      id: 'GIFTBOGO',
-      title: 'GIFT BUY ONE GET ONE',
-      detail: 'Buy 1 Manor Gift Hamper, Get 1 Free',
-      terms: 'Valid on Manor Gift Hampers only.',
-      logo: '/images/gift-icon.png',
-      minAmount: 0,
-      discount: 0,
-      type: 'bogo'
-    },
-    {
-      id: 'TEATIME',
-      title: 'TEA TIME SPECIAL',
-      detail: 'Buy any 3 Leaf Teas and get 15% off that category',
-      terms: 'Valid on Leaf Tea products only.',
-      logo: '/images/tea-icon.png',
-      minAmount: 0,
-      discount: 0.15,
-      type: 'category'
-    }
-  ];
+  const offers = offersData.map(offer => ({
+    ...offer,
+    minAmount: offer.minAmount,
+    discount: offer.discount,
+    type: offer.type === 'percent' ? 'cart-value' : offer.type
+  }));
 
   const cartTotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 

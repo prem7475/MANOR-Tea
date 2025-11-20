@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar.jsx';
-import Marquee from './components/Marquee.jsx';
 import Footer from './components/Footer.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 import SearchBar from './components/SearchBar.jsx';
@@ -40,7 +39,6 @@ const AppContent = () => {
 
   return (
     <div className="bg-manorLight text-manorText font-serif min-h-screen flex flex-col">
-      <Marquee />
       <Navbar openCart={openCart} />
       <main className="flex-1">
         <Routes>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LeadershipCard = ({ id, name, designation, photo, details, isBlurred, onCardClick, isExpanded, onShowMore }) => {
+const LeadershipCard = ({ id, name, designation, photo, details, isBlurred, onCardClick, isExpanded, onShowMore, index }) => {
 
   const handleCardClick = () => {
     onCardClick(id);
@@ -13,7 +13,7 @@ const LeadershipCard = ({ id, name, designation, photo, details, isBlurred, onCa
   return (
     <>
       <div
-        className={`product-card relative group overflow-visible p-2 md:p-6 max-w-full md:max-w-sm flex flex-col items-center md:items-start h-auto hover:shadow-lg cursor-pointer transition-all duration-300 ${isBlurred ? 'blur-sm opacity-50' : ''}`}
+        className={`product-card relative group overflow-visible p-2 md:p-6 max-w-full md:max-w-sm flex flex-col items-center md:items-start h-auto hover:shadow-lg hover:shadow-xl hover:scale-105 cursor-pointer transition-all duration-500 ${isBlurred ? 'md:blur-sm md:opacity-50' : ''} fade-in-up`}
         onClick={handleCardClick}
       >
         <div className="image-container overflow-hidden rounded-md mb-0 md:mb-4 w-48 h-72 flex-shrink-0 border border-manorText/30">

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useCart } from '../hooks/useCart.jsx';
 import { Link } from 'react-router-dom';
 import { useRecommendations } from '../context/RecommendationContext.jsx';
+import offersData from '../data/offersData.js';
 
 const Cart = () => {
   const { cart, updateQuantity, removeFromCart, appliedOffers, applyOffer, removeOffer, getSubtotal, getTotal } = useCart();
