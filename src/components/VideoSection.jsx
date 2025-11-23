@@ -26,14 +26,14 @@ const VideoSection = () => {
         <div className="flex flex-col sm:flex-row gap-4">
           <a
             href="/products"
-            className="bg-manorGreen text-white font-semibold px-8 py-4 rounded-lg shadow-lg hover:bg-manorGreen/90 transition-all duration-300 flex items-center gap-2 group"
+            className="bg-manorGreen text-white font-semibold px-8 py-4 rounded-lg shadow-lg hover:bg-manorGreen/90 transition-all duration-300 flex items-center gap-2 group min-h-[44px] min-w-[44px] touch-manipulation"
           >
             Shop Now
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </a>
           <a
             href="#about"
-            className="border-2 border-manorGold text-manorGold font-semibold px-8 py-4 rounded-lg hover:bg-manorGold hover:text-white transition-all duration-300"
+            className="border-2 border-manorGold text-manorGold font-semibold px-8 py-4 rounded-lg hover:bg-manorGold hover:text-white transition-all duration-300 min-h-[44px] min-w-[44px] touch-manipulation"
           >
             Learn More
           </a>

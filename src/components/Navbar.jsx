@@ -10,6 +10,7 @@ const Navbar = ({ openCart }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showCartSummary, setShowCartSummary] = useState(false);
   const { cart, cartAnimation } = useCart();
+  const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
   const { favourites } = useFavourites();
 
   const toggleDropdown = () => setCompanyDropdownOpen(!companyDropdownOpen);
@@ -127,27 +128,27 @@ const Navbar = ({ openCart }) => {
       </div>
 
       {/* Mobile Cart and Menu */}
-      <div className="md:hidden flex items-center gap-4 text-xl">
+      <div className="md:hidden flex items-center gap-6 text-xl">
         <div
           className="relative hover:text-manorGold transition-colors duration-300 flex items-center gap-2 cursor-pointer"
           aria-label="Cart"
           onClick={openCart}
         >
-          <ShoppingCart className="w-6 h-6" />
+          <ShoppingCart className="w-8 h-8" />
           {cart.length > 0 && (
-            <span className="bg-manorGreen text-white rounded-full text-xs w-5 h-5 flex items-center justify-center font-bold animate-bounce-in">
+            <span className="bg-manorGreen text-white rounded-full text-xs w-6 h-6 flex items-center justify-center font-bold animate-bounce-in">
               {cart.length}
             </span>
           )}
         </div>
         <button
-          className="flex flex-col justify-center items-center w-8 h-8 space-y-1"
+          className="flex flex-col justify-center items-center w-10 h-10 space-y-1"
           onClick={toggleMobileMenu}
           aria-label="Toggle mobile menu"
         >
-          <span className={`block w-6 h-0.5 bg-black transition-transform duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></span>
-          <span className={`block w-6 h-0.5 bg-black transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-0' : ''}`}></span>
-          <span className={`block w-6 h-0.5 bg-black transition-transform duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></span>
+          <span className={`block w-8 h-1 bg-black transition-transform duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
+          <span className={`block w-8 h-1 bg-black transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-0' : ''}`}></span>
+          <span className={`block w-8 h-1 bg-black transition-transform duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
         </button>
       </div>
 

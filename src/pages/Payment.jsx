@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useCart } from '../hooks/useCart.jsx';
 
 const Payment = () => {
@@ -13,9 +13,23 @@ const Payment = () => {
   });
 
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [verifying, setVerifying] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const verifyPayment = async (paymentId) => {
+    setVerifying(true);
+    // Mock verification - in real app, call backend API to verify with Razorpay
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        // Simulate 90% success rate
+        const success = Math.random() > 0.1;
+        setVerifying(false);
+        resolve(success);
+      }, 2000); // Simulate network delay
+    });
   };
 
   const loadRazorpayScript = () => {
@@ -48,10 +62,17 @@ const Payment = () => {
       currency: 'INR',
       name: 'Manor Tea',
       description: `Test Transaction - Total: ₹${(finalAmount / 100).toFixed(2)}`,
-      handler: function (response) {
-        alert('Payment successful. Payment ID: ' + response.razorpay_payment_id);
-        setPaymentSuccess(true);
-        clearCart();
+      handler: async function (response) {
+        const isVerified = await verifyPayment(response.razorpay_payment_id);
+        if (isVerified) {
+          setPaymentSuccess(true);
+          clearCart();
+          setTimeout(() => {
+            navigate('/thank-you');
+          }, 3000); // Show success animation for 3 seconds then navigate
+        } else {
+          alert('Payment verification failed. Please contact support.');
+        }
       },
       prefill: {
         name: form.email,
@@ -72,10 +93,48 @@ const Payment = () => {
     displayRazorpay();
   };
 
+  if (verifying) {
+    return (
+      <div className="verifying-container">
+        <h1 className="verifying-text">Verifying Payment...</h1>
+        <div className="spinner"></div>
+        <style>{`
+          .verifying-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+            background-color: #fff8ea;
+            color: #3e2f1c;
+            font-family: 'Georgia', serif;
+            font-size: 2rem;
+          }
+          .verifying-text {
+            margin-bottom: 2rem;
+          }
+          .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #c68e53;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+          }
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `}</style>
+      </div>
+    );
+  }
+
   if (paymentSuccess) {
     return (
-      <div className="payment-success-container">
+      <div className="payment-success-container animate-fade-in">
         <h1 className="thank-you-text">THANK YOU for Choosing MANOR</h1>
+        <div className="confetti"></div>
         <div className="sprinkles"></div>
         <style>{`
           .payment-success-container {
@@ -90,11 +149,24 @@ const Payment = () => {
             font-size: 2.5rem;
             position: relative;
             overflow: hidden;
+            animation: fadeIn 1s ease-in;
           }
           .thank-you-text {
             text-align: center;
             text-shadow: 0 0 10px #ffcc00, 0 0 20px #ffcc00;
             margin-bottom: 2rem;
+            animation: bounce 2s infinite;
+          }
+          .confetti {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background-image: radial-gradient(circle, #ff69b4 3px, transparent 4px), radial-gradient(circle, #00ff00 3px, transparent 4px), radial-gradient(circle, #0000ff 3px, transparent 4px);
+            background-size: 30px 30px;
+            animation: confetti-fall 5s linear infinite;
           }
           .sprinkles {
             position: absolute;
@@ -108,13 +180,22 @@ const Payment = () => {
             animation: sprinkle-fall 3s linear infinite;
             background-size: 20px 20px;
           }
+          @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+          }
+          @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+          }
+          @keyframes confetti-fall {
+            0% { background-position: 0 0, 0 0, 0 0; }
+            100% { background-position: 100px 100vh, 200px 100vh, 300px 100vh; }
+          }
           @keyframes sprinkle-fall {
-            0% {
-              background-position: 0 -20px;
-            }
-            100% {
-              background-position: 0 100%;
-            }
+            0% { background-position: 0 -20px; }
+            100% { background-position: 0 100%; }
           }
         `}</style>
       </div>
