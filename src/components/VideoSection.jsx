@@ -12,7 +12,7 @@ const VideoSection = () => {
         {/* Trust Badge */}
         <div className="flex items-center gap-2 mb-4 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2">
           <Star className="w-4 h-4 text-manorGold fill-manorGold" />
-          <span className="text-sm text-white font-medium">Premium Tea Since 2020</span>
+          <span className="text-sm text-white font-medium">Premium Tea Since 2023</span>
         </div>
 
         <h2 className="text-3xl md:text-5xl lg:text-6xl font-serif font-bold text-white mb-6 leading-tight">

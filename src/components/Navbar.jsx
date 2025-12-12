@@ -1,213 +1,198 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useCart } from '../hooks/useCart.jsx';
 import { useFavourites } from '../context/FavouritesContext.jsx';
-import { Heart, ShoppingCart, Menu, User } from 'lucide-react';
+import { Heart, ShoppingCart, X } from 'lucide-react'; 
 
 const Navbar = ({ openCart }) => {
   const location = useLocation();
-  const [companyDropdownOpen, setCompanyDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showCartSummary, setShowCartSummary] = useState(false);
-  const { cart, cartAnimation } = useCart();
-  const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const { favourites } = useFavourites();
+  
+  // State for appearance (Faded vs Flat)
+  const [isScrolled, setIsScrolled] = useState(false);
+  // State for visibility (Smart Roll Up/Down)
+  const [isVisible, setIsVisible] = useState(true);
+  
+  // Ref to track scroll direction
+  const lastScrollY = useRef(0);
 
-  const toggleDropdown = () => setCompanyDropdownOpen(!companyDropdownOpen);
-  const closeDropdown = () => setCompanyDropdownOpen(false);
+  const { cart } = useCart();
+  // const { favourites } = useFavourites(); 
+
   const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
   const isActive = (path) => location.pathname === path;
 
+  // Handle Scroll Effects
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // 1. Transparency Logic (Faded Glass Effect)
+      if (currentScrollY > 20) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+
+      // 2. Smart Visibility Logic (Hide on Down, Show on Up)
+      if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
+        // Scrolling DOWN -> Hide Navbar
+        setIsVisible(false);
+      } else {
+        // Scrolling UP -> Show Navbar
+        setIsVisible(true);
+      }
+
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Helper for Link Styling (Updated to Manor Orange #E69536)
+  const getNavClasses = (path, isMobile = false) => {
+    const textColor = "text-[#2B221F]"; 
+    const baseClasses = `${textColor} font-medium transition-colors duration-200 rounded-full`;
+    const padding = isMobile ? "px-6 py-2 my-1" : "px-5 py-1.5";
+    
+    // Active state uses Orange + White text
+    const activeState = isActive(path) 
+      ? "bg-[#E69536] text-white shadow-sm" 
+      : "hover:text-[#E69536]";
+
+    return `${baseClasses} ${padding} ${activeState}`;
+  };
+
   return (
-    <nav className="bg-white text-black px-4 md:px-8 py-2 shadow-lg flex items-center justify-between font-serif font-bold relative sticky top-0 z-50">
-      {/* Company Logo */}
-      <Link to="/" className="flex items-center relative group" onClick={closeMobileMenu}>
+    <nav
+      className={`fixed top-0 left-0 w-full z-50 font-serif text-[#2B221F] transition-all duration-300 ease-in-out px-6 md:px-12 flex items-center justify-between
+      ${isScrolled ? 'shadow-lg py-2' : 'py-5 shadow-none'}
+      ${isVisible ? 'translate-y-0' : '-translate-y-full'} 
+      `}
+      // Inline styles for reliable Transparency/Glass effect
+      style={{
+        backgroundColor: isScrolled ? 'rgba(243, 224, 198, 0.3)' : '#F3E0C6', // 0.3 Opacity (Very Faded)
+        backdropFilter: isScrolled ? 'blur(12px)' : 'none', 
+        WebkitBackdropFilter: isScrolled ? 'blur(12px)' : 'none', 
+      }}
+    >
+      {/* 1. Company Logo & Text */}
+      <Link 
+        to="/" 
+        className="flex items-center gap-3 flex-shrink-0" 
+        onClick={closeMobileMenu}
+      >
         <img
           src="/ManorLogo.png"
           alt="ManorLogo"
-          className="h-8 md:h-12 w-auto"
+          className="h-12 md:h-14 w-auto object-contain"
         />
-        <span className="absolute left-0 top-1/2 transform -translate-y-1/2 text-xl md:text-2xl font-bold text-black opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:left-full">
-          MANOR
-        </span>
+        <div className="flex flex-col justify-center">
+            <span className="text-2xl font-bold tracking-wide leading-none">MANOR</span>
+            <span className="text-[10px] tracking-[0.2em] uppercase opacity-80 mt-1">The tea of your morning</span>
+        </div>
       </Link>
 
-      {/* Desktop Navigation Links */}
-      <div className="hidden md:flex items-center gap-4 relative text-lg">
-        <Link
-          to="/"
-          className={`hover:text-yellow-400 transition-colors duration-300 ${isActive('/') ? 'text-yellow-400' : ''}`}
-          onClick={closeMobileMenu}
-        >
-          Home
-        </Link>
-        <Link
-          to="/products"
-          className={`hover:text-yellow-400 transition-colors duration-300 ${isActive('/products') ? 'text-yellow-400' : ''}`}
-          onClick={closeMobileMenu}
-        >
-          Products
-        </Link>
-        <Link
-          to="/gifts"
-          className={`hover:text-yellow-400 transition-colors duration-300 ${isActive('/gifts') ? 'text-yellow-400' : ''}`}
-          onClick={closeMobileMenu}
-        >
-          Gifts
-        </Link>
-        <Link
-          to="/about"
-          className={`hover:text-yellow-400 transition-colors duration-300 ${isActive('/about') ? 'text-yellow-400' : ''}`}
-          onClick={closeMobileMenu}
-        >
-          About Us
-        </Link>
-        <Link
-          to="/leadership"
-          className={`hover:text-yellow-400 transition-colors duration-300 ${isActive('/leadership') ? 'text-yellow-400' : ''}`}
-          onClick={closeMobileMenu}
-        >
-          Leadership
-        </Link>
-        <Link
-          to="/offers"
-          className={`hover:text-yellow-400 transition-colors duration-300 ${isActive('/offers') ? 'text-yellow-400' : ''}`}
-          onClick={closeMobileMenu}
-        >
-          Offers
-        </Link>
+      {/* 2. Desktop Navigation Links */}
+      <div className="hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base">
+        <Link to="/" className={getNavClasses('/')}>Home</Link>
+        <Link to="/products" className={getNavClasses('/products')}>Products</Link>
+        <Link to="/gifts" className={getNavClasses('/gifts')}>Gifts</Link>
+        <Link to="/about" className={getNavClasses('/about')}>About Us</Link>
+        <Link to="/leadership" className={getNavClasses('/leadership')}>Leadership</Link>
+      </div>
 
-        {/* Favourites with Icon */}
+      {/* 3. Right Side Icons */}
+      <div className="flex items-center gap-6 flex-shrink-0">
+        {/* Favourites */}
         <Link
           to="/favourites"
-          className={`relative hover:text-manorGold transition-colors duration-300 flex items-center gap-2 ${isActive('/favourites') ? 'text-manorGold' : ''}`}
+          className={`hidden sm:flex items-center gap-2 transition-colors ${isActive('/favourites') ? 'text-[#E69536]' : 'hover:text-[#E69536]'}`}
           aria-label="Favourites"
-          onClick={closeMobileMenu}
         >
-          <Heart className="w-5 h-5" />
-          <span className="hidden lg:inline">Favourites</span>
+          <Heart className="w-6 h-6" strokeWidth={1.5} />
         </Link>
 
-        {/* Cart with Icon */}
+        {/* Cart Icon */}
         <div
-          className={`relative hover:text-manorGold transition-colors duration-300 flex items-center gap-2 cursor-pointer ${location.pathname === '/cart' ? 'text-manorGold' : ''}`}
+          className="relative flex items-center gap-2 cursor-pointer hover:text-[#E69536] transition-colors"
           aria-label="Cart"
           onClick={(e) => {
             e.preventDefault();
             openCart();
-            closeMobileMenu();
           }}
           onMouseEnter={() => setShowCartSummary(true)}
           onMouseLeave={() => setShowCartSummary(false)}
         >
-          <ShoppingCart className="w-5 h-5" />
-          <span className="hidden lg:inline">Cart</span>
+          <ShoppingCart className="w-6 h-6" strokeWidth={1.5} />
+          
           {cart.length > 0 && (
-            <span className="bg-manorGreen text-white rounded-full text-xs w-5 h-5 flex items-center justify-center font-bold animate-bounce-in">
+            <span className="bg-[#E69536] text-white rounded-full text-[10px] w-4 h-4 flex items-center justify-center font-bold absolute -top-1 -right-1">
               {cart.length}
             </span>
           )}
+
+          {/* Cart Summary Hover Dropdown */}
           {showCartSummary && cart.length > 0 && (
-            <div className="absolute top-full right-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-50 p-4">
-              <h4 className="font-bold text-sm mb-2">Cart Summary</h4>
-              <ul className="space-y-1 max-h-32 overflow-y-auto">
+            <div className="absolute top-full right-0 mt-5 w-72 bg-white border border-gray-100 rounded-lg shadow-xl z-50 p-5 animate-fade-in-up font-sans cursor-default text-[#2B221F]">
+              <div className="absolute -top-2 right-3 w-4 h-4 bg-white transform rotate-45 border-t border-l border-gray-100"></div>
+              
+              <h4 className="font-bold text-sm mb-3 uppercase tracking-wide">Cart Summary</h4>
+              <ul className="space-y-3 max-h-48 overflow-y-auto custom-scrollbar pr-2">
                 {cart.slice(0, 3).map(({ id, name, price, quantity }) => (
-                  <li key={id} className="text-xs flex justify-between">
-                    <span className="truncate">{name}</span>
-                    <span>₹{price} x {quantity}</span>
+                  <li key={id} className="text-sm flex justify-between items-center gap-3">
+                    <span className="truncate font-medium">{name}</span>
+                    <span className="font-semibold whitespace-nowrap">₹{price} x {quantity}</span>
                   </li>
                 ))}
-                {cart.length > 3 && <li className="text-xs text-gray-500">...and {cart.length - 3} more</li>}
+                {cart.length > 3 && <li className="text-xs text-gray-500 italic text-center pt-2">...and {cart.length - 3} more</li>}
               </ul>
-              <div className="mt-2 text-sm font-semibold">Total: ₹{cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)}</div>
+              <div className="mt-4 pt-3 border-t border-gray-100 text-base font-bold flex justify-between">
+                <span>Total:</span>
+                <span>₹{cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)}</span>
+              </div>
             </div>
           )}
         </div>
-      </div>
 
-      {/* Mobile Cart and Menu */}
-      <div className="md:hidden flex items-center gap-6 text-xl">
-        <div
-          className="relative hover:text-manorGold transition-colors duration-300 flex items-center gap-2 cursor-pointer"
-          aria-label="Cart"
-          onClick={openCart}
-        >
-          <ShoppingCart className="w-8 h-8" />
-          {cart.length > 0 && (
-            <span className="bg-manorGreen text-white rounded-full text-xs w-6 h-6 flex items-center justify-center font-bold animate-bounce-in">
-              {cart.length}
-            </span>
-          )}
-        </div>
+        {/* Mobile Hamburger Toggle */}
         <button
-          className="flex flex-col justify-center items-center w-10 h-10 space-y-1"
+          className="md:hidden flex items-center justify-center p-1 focus:outline-none"
           onClick={toggleMobileMenu}
           aria-label="Toggle mobile menu"
         >
-          <span className={`block w-8 h-1 bg-black transition-transform duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
-          <span className={`block w-8 h-1 bg-black transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-0' : ''}`}></span>
-          <span className={`block w-8 h-1 bg-black transition-transform duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
+          {mobileMenuOpen ? (
+             <X className="w-7 h-7 text-[#2B221F]" strokeWidth={1.5} />
+          ) : (
+             <span className="flex flex-col space-y-1.5">
+                <span className="block w-7 h-0.5 bg-[#2B221F]"></span>
+                <span className="block w-7 h-0.5 bg-[#2B221F]"></span>
+                <span className="block w-5 h-0.5 bg-[#2B221F] self-end"></span>
+             </span>
+          )}
         </button>
       </div>
 
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg z-50 flex flex-col items-center py-3 space-y-3">
-          <Link
-            to="/"
-            className={`hover:text-yellow-400 transition-colors duration-300 ${isActive('/') ? 'text-yellow-400' : ''}`}
-            onClick={closeMobileMenu}
-          >
-            Home
-          </Link>
-          <Link
-            to="/products"
-            className={`hover:text-yellow-400 transition-colors duration-300 ${isActive('/products') ? 'text-yellow-400' : ''}`}
-            onClick={closeMobileMenu}
-          >
-            Products
-          </Link>
-          <Link
-            to="/gifts"
-            className={`hover:text-yellow-400 transition-colors duration-300 ${isActive('/gifts') ? 'text-yellow-400' : ''}`}
-            onClick={closeMobileMenu}
-          >
-            Gifts
-          </Link>
-          <Link
-            to="/about"
-            className={`hover:text-yellow-400 transition-colors duration-300 ${isActive('/about') ? 'text-yellow-400' : ''}`}
-            onClick={closeMobileMenu}
-          >
-            About Us
-          </Link>
-          <Link
-            to="/leadership"
-            className={`hover:text-yellow-400 transition-colors duration-300 ${isActive('/leadership') ? 'text-yellow-400' : ''}`}
-            onClick={closeMobileMenu}
-          >
-            Leadership
-          </Link>
-          <Link
-            to="/offers"
-            className={`hover:text-yellow-400 transition-colors duration-300 ${isActive('/offers') ? 'text-yellow-400' : ''}`}
-            onClick={closeMobileMenu}
-          >
-            Offers
-          </Link>
-          <Link
-            to="/favourites"
-            className={`relative hover:text-manorGold transition-colors duration-300 flex items-center gap-2 ${isActive('/favourites') ? 'text-manorGold' : ''}`}
-            aria-label="Favourites"
-            onClick={closeMobileMenu}
-          >
-            <Heart className="w-5 h-5" />
-            Favourites
-          </Link>
-        </div>
-      )}
+      {/* 4. Mobile Menu Dropdown */}
+      <div 
+        className={`md:hidden fixed left-0 right-0 bg-[#F3E0C6] shadow-lg z-40 flex flex-col items-center overflow-hidden transition-all duration-300 ease-in-out ${
+          mobileMenuOpen ? 'max-h-screen py-8 opacity-100 border-t border-[#EACAA5]' : 'max-h-0 py-0 opacity-0'
+        }`}
+        style={{ top: isScrolled ? '60px' : '88px' }} 
+      >
+        <Link to="/" className={getNavClasses('/', true)} onClick={closeMobileMenu}>Home</Link>
+        <Link to="/products" className={getNavClasses('/products', true)} onClick={closeMobileMenu}>Products</Link>
+        <Link to="/gifts" className={getNavClasses('/gifts', true)} onClick={closeMobileMenu}>Gifts</Link>
+        <Link to="/about" className={getNavClasses('/about', true)} onClick={closeMobileMenu}>About Us</Link>
+        <Link to="/leadership" className={getNavClasses('/leadership', true)} onClick={closeMobileMenu}>Leadership</Link>
+        <Link to="/favourites" className={`${getNavClasses('/favourites', true)} flex items-center gap-2 mt-2`} onClick={closeMobileMenu}>
+          <Heart className="w-5 h-5" strokeWidth={1.5} /> Favourites
+        </Link>
+      </div>
     </nav>
   );
 };
