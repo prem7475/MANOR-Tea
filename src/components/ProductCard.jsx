@@ -39,10 +39,7 @@ const ProductCard = ({
 
   return (
     <>
-      {/* 1. Increased height to 'h-60' (approx 240px) to make the card BIGGER 
-         2. Keeps horizontal layout (flex-row)
-      */}
-      <div className="w-full h-60 md:h-64 rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden flex flex-row">
+      <div className="w-full h-60 md:h-64 rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden flex flex-row group">
         
         {/* --- LEFT: Image (40% width) --- */}
         <div className="relative w-[40%] h-full bg-gray-50 border-r border-gray-100 flex-shrink-0">
@@ -50,27 +47,27 @@ const ProductCard = ({
           {/* Badges */}
           <div className="absolute top-2 left-2 z-10 flex flex-col items-start gap-1">
             {discountPercent > 0 && !isSoldOut && (
-              <span className="bg-[#2B221F] text-white font-bold text-[10px] leading-none px-2 py-1 rounded">
+              <span className="bg-[#2B221F] text-white font-bold text-[10px] leading-none px-2 py-1 rounded font-serif">
                 {discountPercent}% OFF
               </span>
             )}
             {isBestSeller && !isSoldOut && (
-              <span className="bg-[#E69536] text-white font-bold text-[10px] leading-none px-2 py-1 rounded">
+              <span className="bg-[#E69536] text-white font-bold text-[10px] leading-none px-2 py-1 rounded font-serif">
                 BEST SELLER
               </span>
             )}
             {isSoldOut && (
-              <span className="bg-gray-500 text-white font-bold text-[10px] leading-none px-2 py-1 rounded">
+              <span className="bg-gray-500 text-white font-bold text-[10px] leading-none px-2 py-1 rounded font-serif">
                 SOLD OUT
               </span>
             )}
           </div>
 
-          {/* Like Button */}
+          {/* Like Button - FIXED: Changed <button> to <div> to prevent nesting error */}
           <div className="absolute top-2 right-2 z-10">
-            <button className="bg-white/90 rounded-full p-2 shadow-sm hover:bg-white transition-all">
+            <div className="bg-white/90 rounded-full p-2 shadow-sm hover:bg-white transition-all cursor-pointer">
               <LikeButton product={{ id }} />
-            </button>
+            </div>
           </div>
 
           {/* Product Image */}
@@ -84,7 +81,7 @@ const ProductCard = ({
               alt={name}
               loading="lazy"
               onClick={!isCustomProduct ? openModal : undefined}
-              className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
           </Link>
         </div>
@@ -97,7 +94,6 @@ const ProductCard = ({
             to={isCustomProduct ? "/custom-pack" : `/product/${id}`}
             className="block"
           >
-            {/* Bigger Title Font */}
             <h3 className="font-serif font-bold text-lg text-[#2B221F] leading-snug line-clamp-2 mb-2">
               {name}
             </h3>
@@ -105,7 +101,7 @@ const ProductCard = ({
             {rating && (
               <div className="flex items-center gap-1.5 mb-3">
                 <span className="text-[#E69536] text-sm">★</span>
-                <span className="text-xs text-gray-500 font-medium">
+                <span className="text-xs text-gray-500 font-medium font-sans">
                   {rating} ({reviews})
                 </span>
               </div>
@@ -116,33 +112,32 @@ const ProductCard = ({
           <div className="flex items-end justify-between mb-4">
             <div className="flex flex-col leading-none">
               {originalPrice > price && (
-                <span className="text-xs text-gray-400 line-through mb-1">
+                <span className="text-xs text-gray-400 line-through mb-1 font-sans">
                   ₹{originalPrice}
                 </span>
               )}
-              {/* Bigger Price Font */}
-              <span className="text-xl font-bold text-[#2B221F]">
+              <span className="text-xl font-bold text-[#2B221F] font-sans">
                 ₹{price}
               </span>
             </div>
 
-            <span className="text-xs text-gray-600 font-medium bg-gray-50 border border-gray-100 px-2 py-1 rounded whitespace-nowrap">
+            <span className="text-xs text-gray-600 font-medium bg-gray-50 border border-gray-100 px-2 py-1 rounded whitespace-nowrap font-sans">
               {weight} g
             </span>
           </div>
 
-          {/* BUTTON: Bigger & clearly separated at the bottom */}
+          {/* BUTTON */}
           <div className="mt-auto w-full">
             {isCustomProduct ? (
               <button
                 onClick={handleCustomize}
-                className="w-full bg-[#E69536] hover:bg-[#CC8430] text-white font-bold text-sm py-3 rounded-lg shadow-sm uppercase tracking-wide transition-all"
+                className="w-full bg-[#E69536] hover:bg-[#CC8430] text-white font-bold text-sm py-3 rounded-lg shadow-sm uppercase tracking-wide transition-all font-sans"
               >
                 Customize
               </button>
             ) : (
               <AddToCartButton
-                className="w-full !bg-[#E69536] hover:!bg-[#CC8430] !text-white !font-bold !text-sm !py-3 !rounded-lg !shadow-sm uppercase tracking-wide transition-all"
+                className="w-full !bg-[#E69536] hover:!bg-[#CC8430] !text-white !font-bold !text-sm !py-3 !rounded-lg !shadow-sm uppercase tracking-wide transition-all font-sans"
                 product={{ id, name, price, rating, reviews, isSoldOut }}
                 label="Add to Cart"
               />

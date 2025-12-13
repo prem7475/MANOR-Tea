@@ -1,50 +1,55 @@
 import React from 'react';
 
-const LeadershipCard = ({ id, name, designation, photo, details, isBlurred, onCardClick, isExpanded, onShowMore, index }) => {
-
-  const handleCardClick = () => {
-    onCardClick(id);
-  };
-
-  const toggleShowMore = () => {
-    onShowMore(id);
-  };
+const LeadershipCard = ({ image, name, designation, details, onShowMore, isExpanded, index }) => {
+  // SAFETY CHECK: Ensure details is a string before trying to slice it
+  // This prevents the "Cannot read properties of undefined" crash
+  const safeDetails = details || ""; 
+  
+  const shouldTruncate = safeDetails.length > 100;
+  const displayDetails = isExpanded ? safeDetails : safeDetails.slice(0, 100) + (shouldTruncate ? "..." : "");
 
   return (
-    <>
-      <div
-        className={`product-card relative group overflow-visible p-2 md:p-6 max-w-full md:max-w-sm flex flex-col items-center md:items-start h-auto hover:shadow-lg hover:shadow-xl hover:scale-105 cursor-pointer transition-all duration-500 ${isBlurred ? 'md:blur-sm md:opacity-50' : ''} fade-in-up`}
-        onClick={handleCardClick}
-      >
-        <div className="image-container overflow-hidden rounded-md mb-0 md:mb-4 w-48 h-72 flex-shrink-0 border border-manorText/30">
-          <picture>
-            <source srcSet={photo.replace(/\.(jpg|jpeg|png)$/i, '.webp')} type="image/webp" />
-            <img
-              src={photo}
-              alt={name}
-              className="w-full h-full object-cover rounded-md"
-              loading="lazy"
-            />
-          </picture>
-        </div>
-        <div className="flex flex-col flex-grow min-w-0">
-          <h3 className="font-serif font-semibold text-sm md:text-base mb-1 md:mb-2 text-manorText uppercase tracking-wide truncate">{name}</h3>
-          <p className="font-serif text-xs md:text-sm text-manorText/80 mb-1 md:mb-3 line-clamp-3">{designation}</p>
-          <p className={`font-serif text-xs md:text-sm text-manorText/60 mb-1 md:mb-2 ${isExpanded ? '' : 'line-clamp-3'}`}>
-            {details}
-          </p>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleShowMore();
-            }}
-            className="font-serif text-sm md:text-base text-manorText hover:text-manorText/80 underline self-start mt-2 px-2 py-1 bg-white/20 rounded border border-manorText/20"
-          >
-            {isExpanded ? 'Show Less' : 'Show More'}
-          </button>
-        </div>
+    <div className="bg-white border border-[#EACAA5] rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col h-full group">
+      {/* Image Container */}
+      <div className="relative h-64 overflow-hidden bg-[#F3E0C6]">
+        {image ? (
+          <img 
+            src={image} 
+            alt={name} 
+            className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+            loading="lazy"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-[#2B221F]/50">
+            No Image
+          </div>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60"></div>
       </div>
-    </>
+
+      {/* Content */}
+      <div className="p-6 flex flex-col flex-grow">
+        <h3 className="font-serif text-xl font-bold text-[#2B221F] mb-1 uppercase tracking-wide">
+          {name}
+        </h3>
+        <p className="font-sans text-xs font-bold text-[#E69536] mb-4 uppercase tracking-wider">
+          {designation}
+        </p>
+        
+        <div className="font-sans text-sm text-gray-600 leading-relaxed mb-4 flex-grow">
+           {displayDetails}
+        </div>
+
+        {shouldTruncate && (
+          <button 
+            onClick={() => onShowMore(index)} 
+            className="self-start text-[#E69536] hover:text-[#CC8430] text-sm font-bold uppercase tracking-wide border-b border-[#E69536] pb-0.5 transition-colors"
+          >
+            {isExpanded ? "Show Less" : "Show More"}
+          </button>
+        )}
+      </div>
+    </div>
   );
 };
 
