@@ -1,19 +1,27 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import AddToCartButton from './AddToCartButton.jsx';
-import LikeButton from './LikeButton.jsx';
-import ImageModal from './ImageModal.jsx';
-import { useCart } from '../hooks/useCart.jsx';
-import { useRecommendations } from '../context/RecommendationContext.jsx';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import AddToCartButton from "./AddToCartButton.jsx";
+import LikeButton from "./LikeButton.jsx";
+import ImageModal from "./ImageModal.jsx";
+import { useRecommendations } from "../context/RecommendationContext.jsx";
 
-const ProductCard = ({ id, name, description, price, originalPrice, discountPercent, isBestSeller, isSoldOut, weight, image, rating, reviews }) => {
+const ProductCard = ({
+  id,
+  name,
+  description,
+  price,
+  originalPrice,
+  discountPercent,
+  isBestSeller,
+  isSoldOut,
+  weight,
+  image,
+  rating,
+  reviews,
+}) => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [showQuickAdd, setShowQuickAdd] = useState(false);
-  const { addToCart } = useCart();
   const { trackInteraction } = useRecommendations();
   const navigate = useNavigate();
-
-  // Check if this is the Custom Product
   const isCustomProduct = String(id) === "4";
 
   const openModal = (e) => {
@@ -23,148 +31,129 @@ const ProductCard = ({ id, name, description, price, originalPrice, discountPerc
 
   const closeModal = () => setModalOpen(false);
 
-  // Handle Redirection for Custom Pack
   const handleCustomize = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    navigate('/custom-pack');
+    navigate("/custom-pack");
   };
 
   return (
     <>
-      <div
-        className="product-card relative group overflow-hidden p-2 md:p-6 max-w-full md:max-w-sm flex flex-row md:flex-col items-center md:items-start h-auto hover:shadow-xl transition-all duration-300 bg-white rounded-lg border border-transparent hover:border-manorBorder/50"
-        onMouseEnter={() => setShowQuickAdd(true)}
-        onMouseLeave={() => setShowQuickAdd(false)}
-      >
-        <LikeButton product={{ id, name, description, price, originalPrice, discountPercent, isBestSeller, isSoldOut, weight, image, rating, reviews }} />
+      {/* 1. Increased height to 'h-60' (approx 240px) to make the card BIGGER 
+         2. Keeps horizontal layout (flex-row)
+      */}
+      <div className="w-full h-60 md:h-64 rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden flex flex-row">
         
-        {/* Badges - Kept Dark Charcoal for Contrast */}
-        {discountPercent > 0 && !isSoldOut && (
-          <div className="discount-badge absolute top-0.5 left-0.5 bg-manorDark text-white font-bold text-[8px] px-1.5 py-0.5 rounded uppercase z-10">
-            {discountPercent}% OFF
-          </div>
-        )}
-        {isBestSeller && !isSoldOut && (
-          <div className="best-seller-badge absolute top-6 left-0.5 bg-manorOrange text-white font-bold text-[8px] px-1.5 py-0.5 rounded uppercase z-10 shadow-sm">
-            BEST SELLER
-          </div>
-        )}
-        {isSoldOut && (
-          <div className="sold-out-badge absolute top-0.5 left-0.5 bg-gray-500 text-white font-bold text-[8px] px-1.5 py-0.5 rounded uppercase z-10">
-            SOLD OUT
-          </div>
-        )}
-
-        <div className="flex flex-row md:flex-col items-center md:items-start flex-grow min-w-0 relative w-full">
+        {/* --- LEFT: Image (40% width) --- */}
+        <div className="relative w-[40%] h-full bg-gray-50 border-r border-gray-100 flex-shrink-0">
           
-          {/* Main Click Area */}
-          <Link 
-            to={isCustomProduct ? "/custom-pack" : `/product/${id}`} 
-            className="flex flex-row md:flex-col items-center md:items-start flex-grow min-w-0 w-full" 
-            onClick={(e) => {
-               trackInteraction(id, 'click');
-            }}
-          >
-            <div className="image-container overflow-hidden rounded-md mb-0 md:mb-4 w-24 h-24 md:w-full md:h-48 flex-shrink-0 relative" onClick={!isCustomProduct ? openModal : undefined}>
-              <picture>
-                <source srcSet={image.replace(/\.(jpg|jpeg|png)$/i, '.webp')} type="image/webp" />
-                <img
-                  src={image}
-                  alt={name}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  loading="lazy"
-                />
-              </picture>
-              
-              {/* Quick Add Button (Small +) - CHANGED TO ORANGE */}
-              {showQuickAdd && !isSoldOut && !isCustomProduct && (
-                <button
-                  className="absolute top-2 right-2 bg-manorOrange text-white rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold hover:bg-manorOrangeHover transition-all duration-200 shadow-lg transform hover:scale-110"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    addToCart({ id, name, price, rating, reviews });
-                  }}
-                  title="Quick Add to Cart"
-                >
-                  +
-                </button>
-              )}
-            </div>
+          {/* Badges */}
+          <div className="absolute top-2 left-2 z-10 flex flex-col items-start gap-1">
+            {discountPercent > 0 && !isSoldOut && (
+              <span className="bg-[#2B221F] text-white font-bold text-[10px] leading-none px-2 py-1 rounded">
+                {discountPercent}% OFF
+              </span>
+            )}
+            {isBestSeller && !isSoldOut && (
+              <span className="bg-[#E69536] text-white font-bold text-[10px] leading-none px-2 py-1 rounded">
+                BEST SELLER
+              </span>
+            )}
+            {isSoldOut && (
+              <span className="bg-gray-500 text-white font-bold text-[10px] leading-none px-2 py-1 rounded">
+                SOLD OUT
+              </span>
+            )}
+          </div>
 
-            <div className="flex flex-col flex-grow ml-3 md:ml-0 min-w-0 w-full">
-              <h3 className="font-serif font-bold text-xs md:text-base mb-1 md:mb-2 text-manorText tracking-wide truncate">{name}</h3>
-              <p className="font-serif text-[10px] md:text-xs text-manorText/70 mb-1 md:mb-3 truncate">{description}</p>
-              
-              {rating && (
-                <div className="flex items-center mb-1 md:mb-2">
-                  <div className="flex text-manorGold text-[10px] md:text-xs">
-                    {[...Array(5)].map((_, i) => (
-                      <span key={i} className={i < Math.floor(rating) ? 'text-manorGold' : 'text-gray-200'}>
-                        ★
-                      </span>
-                    ))}
-                  </div>
-                  <span className="text-[9px] md:text-xs text-manorText/50 ml-1">
-                    {rating} ({reviews})
-                  </span>
-                </div>
-              )}
-              
-              <div className="flex justify-between items-center font-serif mb-1 md:mb-3 min-w-0 w-full">
-                <span className="font-bold text-manorDark text-sm md:text-lg truncate">₹{price > 0 ? price : 'N/A'}</span>
-                <div className="flex items-center gap-2">
-                    {originalPrice > price && originalPrice > 0 && (
-                    <span className="text-[10px] md:text-xs text-gray-400 line-through truncate">₹{originalPrice}</span>
-                    )}
-                    <span className="text-[10px] md:text-xs text-manorText/60 bg-manorBg px-1.5 py-0.5 rounded">{weight}g</span>
-                </div>
+          {/* Like Button */}
+          <div className="absolute top-2 right-2 z-10">
+            <button className="bg-white/90 rounded-full p-2 shadow-sm hover:bg-white transition-all">
+              <LikeButton product={{ id }} />
+            </button>
+          </div>
+
+          {/* Product Image */}
+          <Link
+            to={isCustomProduct ? "/custom-pack" : `/product/${id}`}
+            className="block w-full h-full"
+            onClick={() => trackInteraction(id, "click")}
+          >
+            <img
+              src={image}
+              alt={name}
+              loading="lazy"
+              onClick={!isCustomProduct ? openModal : undefined}
+              className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+            />
+          </Link>
+        </div>
+
+        {/* --- RIGHT: Content (60% width) --- */}
+        <div className="w-[60%] h-full bg-white px-5 py-4 flex flex-col justify-between overflow-hidden">
+          
+          {/* Title & Rating */}
+          <Link
+            to={isCustomProduct ? "/custom-pack" : `/product/${id}`}
+            className="block"
+          >
+            {/* Bigger Title Font */}
+            <h3 className="font-serif font-bold text-lg text-[#2B221F] leading-snug line-clamp-2 mb-2">
+              {name}
+            </h3>
+
+            {rating && (
+              <div className="flex items-center gap-1.5 mb-3">
+                <span className="text-[#E69536] text-sm">★</span>
+                <span className="text-xs text-gray-500 font-medium">
+                  {rating} ({reviews})
+                </span>
               </div>
-            </div>
+            )}
           </Link>
 
-          {/* === BUTTONS LOGIC (UPDATED TO ORANGE) === */}
-          
-          {/* MOBILE VIEW BUTTON */}
-          <div className="ml-3 md:ml-0 md:hidden flex-shrink-0">
+          {/* Price & Weight Row */}
+          <div className="flex items-end justify-between mb-4">
+            <div className="flex flex-col leading-none">
+              {originalPrice > price && (
+                <span className="text-xs text-gray-400 line-through mb-1">
+                  ₹{originalPrice}
+                </span>
+              )}
+              {/* Bigger Price Font */}
+              <span className="text-xl font-bold text-[#2B221F]">
+                ₹{price}
+              </span>
+            </div>
+
+            <span className="text-xs text-gray-600 font-medium bg-gray-50 border border-gray-100 px-2 py-1 rounded whitespace-nowrap">
+              {weight} g
+            </span>
+          </div>
+
+          {/* BUTTON: Bigger & clearly separated at the bottom */}
+          <div className="mt-auto w-full">
             {isCustomProduct ? (
-              <button 
+              <button
                 onClick={handleCustomize}
-                className="bg-manorOrange text-white px-3 py-1.5 text-[10px] font-bold rounded shadow-sm hover:bg-manorOrangeHover transition-colors"
+                className="w-full bg-[#E69536] hover:bg-[#CC8430] text-white font-bold text-sm py-3 rounded-lg shadow-sm uppercase tracking-wide transition-all"
               >
                 Customize
               </button>
             ) : (
-              // Passing orange class to AddToCartButton
-              <AddToCartButton 
-                className="!bg-manorOrange hover:!bg-manorOrangeHover text-white px-3 py-1.5 text-xs rounded shadow-sm min-h-[32px]" 
-                product={{ id, name, price, rating, reviews, isSoldOut }} 
+              <AddToCartButton
+                className="w-full !bg-[#E69536] hover:!bg-[#CC8430] !text-white !font-bold !text-sm !py-3 !rounded-lg !shadow-sm uppercase tracking-wide transition-all"
+                product={{ id, name, price, rating, reviews, isSoldOut }}
+                label="Add to Cart"
               />
             )}
           </div>
-
-          {/* DESKTOP VIEW BUTTON */}
-          <div className="hidden md:block w-full mt-auto">
-            {isCustomProduct ? (
-              <button 
-                onClick={handleCustomize}
-                className="w-full bg-manorOrange hover:bg-manorOrangeHover text-white font-bold py-2.5 px-4 rounded transition-all duration-300 shadow-sm text-sm tracking-wide uppercase"
-              >
-                Customize Now
-              </button>
-            ) : (
-              // Passing orange class to AddToCartButton
-              <AddToCartButton 
-                className="w-full !bg-manorOrange hover:!bg-manorOrangeHover text-white font-bold py-2.5 rounded shadow-sm transition-all duration-300" 
-                product={{ id, name, price, rating, reviews, isSoldOut }} 
-              />
-            )}
-          </div>
-
         </div>
       </div>
-      {modalOpen && <ImageModal image={image} name={name} onClose={closeModal} />}
+
+      {modalOpen && (
+        <ImageModal image={image} name={name} onClose={closeModal} />
+      )}
     </>
   );
 };

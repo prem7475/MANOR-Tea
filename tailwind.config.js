@@ -23,10 +23,14 @@ module.exports = {
         manorAccent: '#E69536',   // Formerly Green -> Now Orange
         manorGreen: '#E69536',    // Formerly Green -> Now Orange
         accentGreen: '#E69536',   // Formerly Green -> Now Orange
+        emerald: { 600: '#E69536', 700: '#CC8430' }, // Override default Tailwind green
+        green: { 500: '#E69536', 600: '#E69536', 700: '#CC8430' }, // Override default Tailwind green
       },
       fontFamily: {
-        serif: ['Playfair Display', 'Georgia', 'serif'],
-        sans: ['Inter', 'Source Sans Pro', 'sans-serif'],
+        // CHANGE: Mapped 'serif' to 'Inter' to remove the fancy curly font 
+        // and make the whole website look "normal" and decent.
+        serif: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',

@@ -31,6 +31,10 @@ const Home = () => {
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold mb-8 text-center">Recommended for You</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+            // In Home.jsx or wherever these cards are displayed:
+<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+   {/* ... products map ... */}
+</div>
             {recommendations.map(product => (
               <ProductCard key={product.id} {...product} />
             ))}
