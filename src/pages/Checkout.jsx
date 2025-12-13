@@ -14,7 +14,7 @@ const Checkout = () => {
 
   // --- CONFIGURATION ---
   // 1. PASTE YOUR GOOGLE SCRIPT URL HERE
-  const GOOGLE_SCRIPT_URL = "PASTE_YOUR_WEB_APP_URL_HERE"; 
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxFcvteSgkl8YMnUZ8GM2mAezaI67diY-vsGCc2dm5k6PwdA1YtTEuBHd974CsiyFN7/exec"; 
   
   // 2. PASTE YOUR WHATSAPP NUMBER HERE (Format: 919876543210)
   const ownerNumber = "917666853412"; 
@@ -63,7 +63,7 @@ const Checkout = () => {
 
     // 4. Send to Google Sheet (The "Excel" part)
     try {
-      if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== "PASTE_YOUR_WEB_APP_URL_HERE") {
+      if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== "https://script.google.com/macros/s/AKfycbxFcvteSgkl8YMnUZ8GM2mAezaI67diY-vsGCc2dm5k6PwdA1YtTEuBHd974CsiyFN7/exec") {
          await fetch(GOOGLE_SCRIPT_URL, {
           method: "POST",
           body: JSON.stringify(orderData),
